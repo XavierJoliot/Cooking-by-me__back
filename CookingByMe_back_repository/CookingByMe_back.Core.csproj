@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Entity\CookingByMe_back.Models.csproj" />
+  </ItemGroup>
+
 </Project>
