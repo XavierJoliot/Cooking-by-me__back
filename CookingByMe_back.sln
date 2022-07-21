@@ -5,7 +5,9 @@ VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CookingByMe_back", "CookingByMe_back\CookingByMe_back.csproj", "{8A330C73-0D6B-4EA3-9B46-190C570AF4C2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CookingByMe_back_models", "Entity\CookingByMe_back_models.csproj", "{0176F19E-6489-48A3-9EBE-E825A6DB4CF7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CookingByMe_back.Models", "Entity\CookingByMe_back.Models.csproj", "{0176F19E-6489-48A3-9EBE-E825A6DB4CF7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CookingByMe_back.Core", "CookingByMe_back_repository\CookingByMe_back.Core.csproj", "{0DF8C00B-887B-43BE-B986-8805E2B303B5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{0176F19E-6489-48A3-9EBE-E825A6DB4CF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0176F19E-6489-48A3-9EBE-E825A6DB4CF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0176F19E-6489-48A3-9EBE-E825A6DB4CF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0DF8C00B-887B-43BE-B986-8805E2B303B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DF8C00B-887B-43BE-B986-8805E2B303B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DF8C00B-887B-43BE-B986-8805E2B303B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DF8C00B-887B-43BE-B986-8805E2B303B5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

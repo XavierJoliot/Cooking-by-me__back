@@ -1,27 +1,30 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CookingByMe_back_models
+namespace CookingByMe_back.Models.Recipe
 {
-    public class Ingredient
+    public class Recipe
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [Required]
-        public int RecipeId { get; set; }
+        public string UserId { get; set; }
+
+        public int? GroupId { get; set; }
 
         [Required]
         [MaxLength(255)]
-        public string Name { get; set; }
+        public string Title { get; set; }
 
-        [Required]
+        public int? Duration { get; set; }
+
         public int Quantity { get; set; }
 
-        [Required]
-        [MaxLength(255)]
-        public string Unit { get; set; }
+        public string? ImagePath { get; set; }
+
+        public string? Note { get; set; }
 
         [Required]
         public DateTime CreatedAt { get; set; }

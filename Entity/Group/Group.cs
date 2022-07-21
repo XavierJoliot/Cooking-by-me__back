@@ -1,22 +1,23 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CookingByMe_back_models
+namespace CookingByMe_back.Models.Group
 {
-    public class Step
+    public class Group
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [Required]
-        public int RecipeId { get; set; }
+        public string UserId { get; set; }
 
         [Required]
-        public int Order { get; set; }
+        public string Title { get; set; }
 
-        [Required]
-        public string Description { get; set; }
+        public string? ImagePath { get; set; }
+
+        public string? Description { get; set; }
 
         [Required]
         public DateTime CreatedAt { get; set; }
