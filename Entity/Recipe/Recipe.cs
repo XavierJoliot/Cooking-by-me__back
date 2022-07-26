@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using CookingByMe_back.Models.Ingredient;
 
 namespace CookingByMe_back.Models.Recipe
 {

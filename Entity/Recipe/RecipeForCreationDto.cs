@@ -23,4 +23,3 @@ namespace CookingByMe_back.Models.Recipe
         public string? Note { get; set; }
     }
 }
-}

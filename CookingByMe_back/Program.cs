@@ -1,9 +1,16 @@
+using CookingByMe_back.Core;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+var Configuration = builder.Configuration;
+
+builder.Services.AddDbContext<CookingByMeContext>(o =>
+    o.UseSqlServer(Configuration.GetConnectionString("LocalConnection"))
+);
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
