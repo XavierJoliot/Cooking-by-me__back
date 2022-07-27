@@ -1,44 +1,47 @@
 ﻿using CookingByMe_back.Core.IRepository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using CookingByMe_back.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Data.Entity.Core;
+using System.Linq.Expressions;
 
 namespace CookingByMe_back.Core.Repository
 {
-    public class Repository<T> : IRepository<T> where T : new()
+    public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
-        public Task<List<T>> GetAllAsync()
+        private readonly CookingByMeContext context;
+
+        public Repository(CookingByMeContext context)
         {
-            return Task.FromResult(new List<T>());
+            this.context = context;
+        }
+
+        public IQueryable<TEntity> FindAll()
+        {
+            return context.Set<TEntity>().AsNoTracking();
         }
 
 
-        public Task<T> GetByIdAsync(int id)
+        public IQueryable<TEntity> FindByCondition(Expression<Func<TEntity, bool>> expression)
         {
-            T entity = new();
-            return Task.FromResult(entity);
+            return context.Set<TEntity>().Where(expression).AsNoTracking();
         }
 
-        public Task<T> AddAsync(T entity)
+        public void Create(TEntity entity)
         {
-            return Task.FromResult(entity);
+            context.Set<TEntity>().Add(entity);
+        }
+        public void Update(TEntity entity)
+        {
+            context.Set<TEntity>().Update(entity);
+        }
+        public void Delete(TEntity entity)
+        {
+            context.Set<TEntity>().Remove(entity);
         }
 
-        public Task<T> UpdateAsync(T entity)
+        public async Task SaveAsync()
         {
-            return Task.FromResult(entity);
-        }
-
-        public Task<bool> Delete(int id)
-        {
-            return Task.FromResult(true);
-        }
-
-        public Task<bool> SaveAsync()
-        {
-            return Task.FromResult(false);
+            await context.SaveChangesAsync();
         }
     }
 }

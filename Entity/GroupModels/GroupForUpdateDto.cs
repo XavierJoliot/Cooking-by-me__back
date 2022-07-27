@@ -1,9 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CookingByMe_back.Models.Group
+namespace CookingByMe_back.Models.GroupModels
 {
-    public class GroupForCreationDto
+    public class GroupForUpdateDto
     {
+        [Required]
+        public int Id { get; set; }
+
         [Required]
         public string UserId { get; set; }
 

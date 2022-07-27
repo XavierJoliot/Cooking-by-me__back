@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CookingByMe_back.Models.Step
+namespace CookingByMe_back.Models.IngredientModels
 {
-    public class StepDto
+    public class IngredientDto
     {
         [Required]
         public int Id { get; set; }
@@ -11,10 +11,13 @@ namespace CookingByMe_back.Models.Step
         public int RecipeId { get; set; }
 
         [Required]
-        public int Order { get; set; }
+        public string Name { get; set; }
 
         [Required]
-        public string Description { get; set; }
+        public int Quantity { get; set; }
+
+        [Required]
+        public string Unit { get; set; }
 
         [Required]
         public DateTime CreatedAt { get; set; }

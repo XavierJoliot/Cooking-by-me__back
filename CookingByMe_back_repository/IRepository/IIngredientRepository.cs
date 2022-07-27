@@ -1,4 +1,4 @@
-﻿using CookingByMe_back.Models.Ingredient;
+﻿using CookingByMe_back.Models.IngredientModels;
 
 namespace CookingByMe_back.Core.IRepository
 {

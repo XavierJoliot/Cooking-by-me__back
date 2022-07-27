@@ -22,7 +22,7 @@ namespace CookingByMe_back.Core.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("CookingByMe_back.Models.Group.Group", b =>
+            modelBuilder.Entity("CookingByMe_back.Models.GroupModels.Group", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -31,7 +31,9 @@ namespace CookingByMe_back.Core.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getdate()");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -55,7 +57,7 @@ namespace CookingByMe_back.Core.Migrations
                     b.ToTable("Group");
                 });
 
-            modelBuilder.Entity("CookingByMe_back.Models.Ingredient.Ingredient", b =>
+            modelBuilder.Entity("CookingByMe_back.Models.IngredientModels.Ingredient", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -64,7 +66,9 @@ namespace CookingByMe_back.Core.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getdate()");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -74,7 +78,7 @@ namespace CookingByMe_back.Core.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<int>("RecipeId")
+                    b.Property<int?>("RecipeId")
                         .HasColumnType("int");
 
                     b.Property<string>("Unit")
@@ -87,10 +91,12 @@ namespace CookingByMe_back.Core.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("RecipeId");
+
                     b.ToTable("Ingredient");
                 });
 
-            modelBuilder.Entity("CookingByMe_back.Models.Recipe.Recipe", b =>
+            modelBuilder.Entity("CookingByMe_back.Models.RecipeModels.Recipe", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -99,12 +105,11 @@ namespace CookingByMe_back.Core.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getdate()");
 
                     b.Property<int?>("Duration")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("GroupId")
                         .HasColumnType("int");
 
                     b.Property<string>("ImagePath")
@@ -118,8 +123,7 @@ namespace CookingByMe_back.Core.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -133,7 +137,7 @@ namespace CookingByMe_back.Core.Migrations
                     b.ToTable("Recipe");
                 });
 
-            modelBuilder.Entity("CookingByMe_back.Models.Step.Step", b =>
+            modelBuilder.Entity("CookingByMe_back.Models.StepModels.Step", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -142,7 +146,9 @@ namespace CookingByMe_back.Core.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getdate()");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -151,7 +157,7 @@ namespace CookingByMe_back.Core.Migrations
                     b.Property<int>("Order")
                         .HasColumnType("int");
 
-                    b.Property<int>("RecipeId")
+                    b.Property<int?>("RecipeId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -159,7 +165,60 @@ namespace CookingByMe_back.Core.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("RecipeId");
+
                     b.ToTable("Step");
+                });
+
+            modelBuilder.Entity("GroupRecipe", b =>
+                {
+                    b.Property<int>("GroupListId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RecipesListId")
+                        .HasColumnType("int");
+
+                    b.HasKey("GroupListId", "RecipesListId");
+
+                    b.HasIndex("RecipesListId");
+
+                    b.ToTable("GroupRecipe");
+                });
+
+            modelBuilder.Entity("CookingByMe_back.Models.IngredientModels.Ingredient", b =>
+                {
+                    b.HasOne("CookingByMe_back.Models.RecipeModels.Recipe", null)
+                        .WithMany("IngredientList")
+                        .HasForeignKey("RecipeId");
+                });
+
+            modelBuilder.Entity("CookingByMe_back.Models.StepModels.Step", b =>
+                {
+                    b.HasOne("CookingByMe_back.Models.RecipeModels.Recipe", null)
+                        .WithMany("StepList")
+                        .HasForeignKey("RecipeId");
+                });
+
+            modelBuilder.Entity("GroupRecipe", b =>
+                {
+                    b.HasOne("CookingByMe_back.Models.GroupModels.Group", null)
+                        .WithMany()
+                        .HasForeignKey("GroupListId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CookingByMe_back.Models.RecipeModels.Recipe", null)
+                        .WithMany()
+                        .HasForeignKey("RecipesListId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CookingByMe_back.Models.RecipeModels.Recipe", b =>
+                {
+                    b.Navigation("IngredientList");
+
+                    b.Navigation("StepList");
                 });
 #pragma warning restore 612, 618
         }

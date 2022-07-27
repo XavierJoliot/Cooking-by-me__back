@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CookingByMe_back.Models.Recipe
+namespace CookingByMe_back.Models.RecipeModels
 {
     public class RecipeForCreationDto
     {

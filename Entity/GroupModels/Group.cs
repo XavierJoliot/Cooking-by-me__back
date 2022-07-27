@@ -1,11 +1,13 @@
-﻿using CookingByMe_back.Models.Recipe;
+﻿using CookingByMe_back.Models.RecipeModels;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CookingByMe_back.Models.Group
+namespace CookingByMe_back.Models.GroupModels
 {
-    public class GroupDto
+    public class Group
     {
-        [Required]
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [Required]
@@ -18,7 +20,7 @@ namespace CookingByMe_back.Models.Group
 
         public string? Description { get; set; }
 
-        public List<RecipeDto> RecipesList { get; set; } = new List<RecipeDto>();
+        public List<Recipe> RecipesList { get; set; } = new List<Recipe>();
 
         [Required]
         public DateTime CreatedAt { get; set; }

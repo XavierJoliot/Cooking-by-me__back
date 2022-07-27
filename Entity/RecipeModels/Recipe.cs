@@ -1,8 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using CookingByMe_back.Models.Ingredient;
+using CookingByMe_back.Models.GroupModels;
+using CookingByMe_back.Models.IngredientModels;
+using CookingByMe_back.Models.StepModels;
 
-namespace CookingByMe_back.Models.Recipe
+namespace CookingByMe_back.Models.RecipeModels
 {
     public class Recipe
     {
@@ -10,25 +12,24 @@ namespace CookingByMe_back.Models.Recipe
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [Required]
         public string UserId { get; set; }
 
-        public int? GroupId { get; set; }
+        public List<Group> GroupList { get; set; } = new List<Group>();
 
-        [Required]
-        [MaxLength(255)]
         public string Title { get; set; }
 
         public int? Duration { get; set; }
 
-        [Required]
         public int Quantity { get; set; }
 
         public string? ImagePath { get; set; }
 
         public string? Note { get; set; }
 
-        [Required]
+        public List<Step> StepList { get; set; } = new List<Step>();
+
+        public List<Ingredient> IngredientList { get; set; } = new List<Ingredient>();
+
         public DateTime CreatedAt { get; set; }
 
         public DateTime? UpdatedAt { get; set; }

@@ -1,9 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CookingByMe_back.Models.Step
+namespace CookingByMe_back.Models.StepModels
 {
-    public class StepForCreationDto
+    public class StepForUpdateDto
     {
+        [Required]
+        public int Id { get; set; }
+
         [Required]
         public int RecipeId { get; set; }
 

@@ -1,4 +1,4 @@
-﻿using CookingByMe_back.Models.Group;
+﻿using CookingByMe_back.Models.GroupModels;
 
 namespace CookingByMe_back.Core.IRepository
 {
