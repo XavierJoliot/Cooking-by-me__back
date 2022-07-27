@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 var Configuration = builder.Configuration;
 
 builder.Services.AddDbContext<CookingByMeContext>(o =>
-    o.UseSqlServer(Configuration.GetConnectionString("LocalConnection"))
+    o.UseSqlServer(Configuration.GetConnectionString("PrimaryConnexion"))
 );
 
 builder.Services.AddControllers();
