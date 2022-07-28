@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CookingByMe_back.Models.GroupModels;
 using CookingByMe_back.Models.IngredientModels;
 using CookingByMe_back.Models.RecipeModels;
 using CookingByMe_back.Models.StepModels;
@@ -20,6 +21,10 @@ namespace CookingByMe_back.Configuration
             CreateMap<Ingredient, IngredientDto>();
             CreateMap<IngredientForCreationDto, Ingredient>();
             CreateMap<IngredientForUpdateDto, Ingredient>();
+
+            CreateMap<Group, GroupDto>();
+            CreateMap<GroupForCreationDto, Group>();
+            CreateMap<GroupForUpdateDto, Group>();
         }
     }
 }

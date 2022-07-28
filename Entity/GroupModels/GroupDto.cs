@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CookingByMe_back.Models.GroupModels
 {
-    public class Groupdto
+    public class GroupDto
     {
         [Required]
         public int Id { get; set; }

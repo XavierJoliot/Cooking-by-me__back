@@ -5,9 +5,6 @@ namespace CookingByMe_back.Models.GroupModels
     public class GroupForUpdateDto
     {
         [Required]
-        public int Id { get; set; }
-
-        [Required]
         public string UserId { get; set; }
 
         [Required]

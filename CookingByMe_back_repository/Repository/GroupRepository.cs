@@ -1,6 +1,6 @@
 ﻿using CookingByMe_back.Core.IRepository;
 using CookingByMe_back.Models.GroupModels;
-using CookingByMe_back.Models.RecipeModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace CookingByMe_back.Core.Repository
 {
@@ -8,6 +8,32 @@ namespace CookingByMe_back.Core.Repository
     {
         public GroupRepository(CookingByMeContext context) : base(context)
         {
+        }
+
+        public async Task<List<Group>> GetAllGroupsAsync()
+        {
+            return await FindAll().ToListAsync();
+        }
+
+        public async Task<Group?> GetGroupByIdAsync(int id)
+        {
+            return await FindByCondition(s => s.Id.Equals(id)).FirstOrDefaultAsync();
+        }
+
+        public void CreateGroup(Group group)
+        {
+            Create(group);
+        }
+
+        public void UpdateGroup(Group group)
+        {
+            group.UpdatedAt = DateTime.Now;
+            Update(group);
+        }
+
+        public void DeleteGroup(Group group)
+        {
+            Delete(group);
         }
     }
 }

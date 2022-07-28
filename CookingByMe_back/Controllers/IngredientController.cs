@@ -24,7 +24,7 @@ namespace CookingByMe_back.Controllers
         public async Task<IActionResult> GetIngredientByIdAsync(int id)
         {
             var ingredient = await _ingredientRepository.GetIngredientByIdAsync(id);
-            //_logger.LogInfo($"Returned a step from database.");
+            //_logger.LogInfo($"Returned an ingredient from database.");
             var ingredientResult = _mapper.Map<Ingredient>(ingredient);
             if (ingredientResult == null)
             {
@@ -57,7 +57,7 @@ namespace CookingByMe_back.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateIngredientpAsync(int id, IngredientForUpdateDto ingredient)
+        public async Task<IActionResult> UpdateIngredientAsync(int id, IngredientForUpdateDto ingredient)
         {
             try
             {
