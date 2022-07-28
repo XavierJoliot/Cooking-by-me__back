@@ -5,9 +5,6 @@ namespace CookingByMe_back.Models.StepModels
     public class StepForCreationDto
     {
         [Required]
-        public int RecipeId { get; set; }
-
-        [Required]
         public int Order { get; set; }
 
         [Required]

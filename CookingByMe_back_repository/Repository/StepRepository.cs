@@ -22,6 +22,7 @@ namespace CookingByMe_back.Core.Repository
 
         public void UpdateStep(Step step)
         {
+            step.UpdatedAt = DateTime.Now;
             Update(step);
         }
 

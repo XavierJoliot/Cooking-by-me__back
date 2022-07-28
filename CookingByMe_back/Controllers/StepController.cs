@@ -20,39 +20,20 @@ namespace CookingByMe_back.Controllers
             //_logger = logger;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateStepAsync(StepForCreationDto stepForCreation)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetStepByIdAsync(int id)
         {
-            try
+            var step = await _stepRepository.GetStepByIdAsync(id);
+            //_logger.LogInfo($"Returned a step from database.");
+            var stepResult = _mapper.Map<Step>(step);
+            if (stepResult == null)
             {
-                if (stepForCreation == null)
-                {
-                    //_logger.LogError("StepForCreation object sent from client is null.");
-                    return BadRequest("StepForCreation object is null");
-                }
-                if (!ModelState.IsValid)
-                {
-                    //_logger.LogError("Invalid owner object sent from client.");
-                    return BadRequest("Invalid model object");
-                }
-
-                var stepEntity = _mapper.Map<StepForCreationDto, Step>(stepForCreation);
-
-                _stepRepository.CreateStep(stepEntity);
-
-                await _stepRepository.SaveAsync();
-
-                var createdStep = _mapper.Map<Step, StepDto>(stepEntity);
-
-                return Ok(createdStep);
+                return NotFound();
             }
-            catch (Exception ex)
-            {
-                //_logger.LogError($"Something went wrong inside CreateStep action: {ex.Message}");
-                return StatusCode(500, "Internal server error");
-            }
+
+            return Ok(stepResult);
         }
-
+       
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteStepAsync(int id)
         {
@@ -61,7 +42,7 @@ namespace CookingByMe_back.Controllers
                 var step = await _stepRepository.GetStepByIdAsync(id);
                 if (step == null)
                 {
-                    //_logger.LogError($"Owner with id: {id}, hasn't been found in db.");
+                    //_logger.LogError($"Step with id: {id}, hasn't been found in db.");
                     return NotFound();
                 }
                 _stepRepository.DeleteStep(step);
@@ -70,7 +51,7 @@ namespace CookingByMe_back.Controllers
             }
             catch (Exception ex)
             {
-                //_logger.LogError($"Something went wrong inside DeleteOwner action: {ex.Message}");
+                //_logger.LogError($"Something went wrong inside DeleteStep action: {ex.Message}");
                 return StatusCode(500, "Internal server error");
             }
         }
@@ -106,7 +87,7 @@ namespace CookingByMe_back.Controllers
                 _stepRepository.UpdateStep(stepEntity);
                 await _stepRepository.SaveAsync();
 
-                return NoContent();
+                return Ok(stepEntity);
             }
             catch (Exception ex)
             {

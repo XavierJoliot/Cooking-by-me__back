@@ -8,9 +8,6 @@ namespace CookingByMe_back.Models.IngredientModels
         public int Id { get; set; }
 
         [Required]
-        public int RecipeId { get; set; }
-
-        [Required]
         public string Name { get; set; }
 
         [Required]

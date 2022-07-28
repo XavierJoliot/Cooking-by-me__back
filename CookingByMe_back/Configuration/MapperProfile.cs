@@ -15,9 +15,11 @@ namespace CookingByMe_back.Configuration
 
             CreateMap<Step, StepDto>();
             CreateMap<StepForCreationDto, Step>();
+            CreateMap<StepForUpdateDto, Step>();
 
             CreateMap<Ingredient, IngredientDto>();
             CreateMap<IngredientForCreationDto, Ingredient>();
+            CreateMap<IngredientForUpdateDto, Ingredient>();
         }
     }
 }

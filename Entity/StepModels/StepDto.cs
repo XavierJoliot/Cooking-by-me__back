@@ -8,9 +8,6 @@ namespace CookingByMe_back.Models.StepModels
         public int Id { get; set; }
 
         [Required]
-        public int RecipeId { get; set; }
-
-        [Required]
         public int Order { get; set; }
 
         [Required]

@@ -12,8 +12,6 @@ namespace CookingByMe_back.Models.RecipeModels
         [Required]
         public string UserId { get; set; }
 
-        public int? GroupId { get; set; }
-
         [Required]
         public string Title { get; set; }
 

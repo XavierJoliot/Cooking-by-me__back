@@ -8,6 +8,8 @@ namespace CookingByMe_back.Core.IRepository
 
         IQueryable<TEntity> FindByCondition(Expression<Func<TEntity, bool>> expression);
 
+        Task<TEntity?> FindEntityAsync(int id);
+
         void Create(TEntity entity);
 
         void Update(TEntity entity);

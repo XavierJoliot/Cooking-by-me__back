@@ -1,5 +1,6 @@
 ﻿using CookingByMe_back.Core.IRepository;
 using CookingByMe_back.Models;
+using CookingByMe_back.Models.StepModels;
 using Microsoft.EntityFrameworkCore;
 using System.Data.Entity.Core;
 using System.Linq.Expressions;
@@ -24,6 +25,11 @@ namespace CookingByMe_back.Core.Repository
         public IQueryable<TEntity> FindByCondition(Expression<Func<TEntity, bool>> expression)
         {
             return context.Set<TEntity>().Where(expression).AsNoTracking();
+        }
+
+        public async Task<TEntity?> FindEntityAsync(int id)
+        {
+            return await context.Set<TEntity>().FindAsync(id);
         }
 
         public void Create(TEntity entity)

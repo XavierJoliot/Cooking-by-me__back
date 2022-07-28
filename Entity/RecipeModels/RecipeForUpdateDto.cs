@@ -4,7 +4,6 @@ namespace CookingByMe_back.Models.RecipeModels
 {
     public class RecipeForUpdateDto
     {
-        public int? GroupId { get; set; }
 
         [Required]
         public string Title { get; set; }
@@ -16,5 +15,7 @@ namespace CookingByMe_back.Models.RecipeModels
         public string? ImagePath { get; set; }
 
         public string? Note { get; set; }
+
+        public DateTime UpdatedAt { get; set; }
     }
 }
