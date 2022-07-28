@@ -30,10 +30,12 @@ namespace CookingByMe_back.Core.Repository
         {
             context.Set<TEntity>().Add(entity);
         }
+
         public void Update(TEntity entity)
         {
             context.Set<TEntity>().Update(entity);
         }
+
         public void Delete(TEntity entity)
         {
             context.Set<TEntity>().Remove(entity);

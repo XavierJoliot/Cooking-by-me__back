@@ -4,12 +4,6 @@ namespace CookingByMe_back.Models.RecipeModels
 {
     public class RecipeForUpdateDto
     {
-        [Required]
-        public int Id { get; set; }
-
-        [Required]
-        public string UserId { get; set; }
-
         public int? GroupId { get; set; }
 
         [Required]

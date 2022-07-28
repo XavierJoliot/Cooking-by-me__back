@@ -9,6 +9,11 @@ namespace CookingByMe_back.Core.Repository
         {
         }
 
+        public void CreateIngredient(Ingredient ingredient)
+        {
+            Create(ingredient);
+        }
+
         public Task<List<Ingredient>> getAllByRecipeIdAsync(int recipeId)
         {
             return Task.FromResult(new List<Ingredient>());

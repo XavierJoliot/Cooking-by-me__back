@@ -27,8 +27,8 @@ namespace CookingByMe_back.Core
 
             recipe.HasKey(r => r.Id);
             recipe.Property(r => r.CreatedAt).HasDefaultValueSql("getdate()");
-            recipe.HasMany(r => r.StepList).WithOne();
-            recipe.HasMany(r => r.IngredientList).WithOne();
+            recipe.HasMany(r => r.StepsList).WithOne().OnDelete(DeleteBehavior.Cascade);
+            recipe.HasMany(r => r.IngredientsList).WithOne().OnDelete(DeleteBehavior.Cascade);
 
 
             group.HasKey(g => g.Id);

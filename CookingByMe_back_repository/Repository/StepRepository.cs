@@ -1,5 +1,6 @@
 ﻿using CookingByMe_back.Core.IRepository;
 using CookingByMe_back.Models.StepModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace CookingByMe_back.Core.Repository
 {
@@ -9,14 +10,24 @@ namespace CookingByMe_back.Core.Repository
         {
         }
 
+        public async Task<Step?> GetStepByIdAsync(int id)
+        {
+            return await FindByCondition(s => s.Id.Equals(id)).FirstOrDefaultAsync();
+        }
+
         public void CreateStep(Step step)
         {
             Create(step);
         }
 
-        public Task<List<Step>> getAllByRecipeIdAsync(int recipeId)
+        public void UpdateStep(Step step)
         {
-            return Task.FromResult(new List<Step>());
+            Update(step);
+        }
+
+        public void DeleteStep(Step step)
+        {
+            Delete(step);
         }
     }
 }
