@@ -1,4 +1,5 @@
-﻿using CookingByMe_back.Models.IngredientModels;
+﻿using CookingByMe_back.Models.GroupModels;
+using CookingByMe_back.Models.IngredientModels;
 using CookingByMe_back.Models.RecipeModels;
 using CookingByMe_back.Models.StepModels;
 
@@ -11,6 +12,8 @@ namespace CookingByMe_back.Core.IRepository
         public Task<Recipe?> GetRecipeByIdAsync(int id);
 
         public Task<Recipe?> FindRecipeAsync(int id);
+
+        public void AddGroup(Recipe recipe, Group group);
 
         public void CreateStep(Recipe recipe, Step step);
 

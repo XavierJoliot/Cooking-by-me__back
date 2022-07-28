@@ -1,4 +1,5 @@
 ﻿using CookingByMe_back.Core.IRepository;
+using CookingByMe_back.Models.GroupModels;
 using CookingByMe_back.Models.IngredientModels;
 using CookingByMe_back.Models.RecipeModels;
 using CookingByMe_back.Models.StepModels;
@@ -24,6 +25,7 @@ namespace CookingByMe_back.Core.Repository
             return await FindByCondition(r => r.Id.Equals(id))
                 .Include(r => r.StepsList)
                 .Include(r => r.IngredientsList)
+                .Include(r => r.GroupList)
                 .FirstOrDefaultAsync();
         }
 
@@ -32,14 +34,19 @@ namespace CookingByMe_back.Core.Repository
             return await FindEntityAsync(id);
         }
 
+        public void AddGroup(Recipe recipe, Group group)
+        {
+            recipe.GroupList.Add(group);
+        }
+
         public void CreateStep(Recipe recipe, Step step)
         {
-            recipe!.StepsList.Add(step);
+            recipe.StepsList.Add(step);
         }
 
         public void CreateIngredient(Recipe recipe, Ingredient ingredient)
         {
-            recipe!.IngredientsList.Add(ingredient);
+            recipe.IngredientsList.Add(ingredient);
         }
 
         public void CreateRecipe(Recipe recipe)

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CookingByMe_back.Core.IRepository;
+using CookingByMe_back.Models.GroupModels;
 using CookingByMe_back.Models.IngredientModels;
 using CookingByMe_back.Models.RecipeModels;
 using CookingByMe_back.Models.StepModels;
@@ -16,17 +17,20 @@ namespace CookingByMe_back.Controllers
         private readonly IRecipeRepository _recipeRepository;
         private readonly IStepRepository _stepRepository;
         private readonly IIngredientRepository _ingredientRepository;
+        private readonly IGroupRepository _groupRepository;
 
         public RecipeController(
             IMapper mapper, 
-            IRecipeRepository recipeRepository, 
-            IStepRepository stepRepository, 
-            IIngredientRepository ingredientRepository)
+            IRecipeRepository recipeRepository,
+            IStepRepository stepRepository,
+            IIngredientRepository ingredientRepository,
+            IGroupRepository groupRepository)
         {
             _mapper = mapper;
             _recipeRepository = recipeRepository;
             _stepRepository = stepRepository;
             _ingredientRepository = ingredientRepository;
+            _groupRepository = groupRepository;
             //_logger = logger;
         }
 
@@ -228,7 +232,7 @@ namespace CookingByMe_back.Controllers
                     return BadRequest("Invalid model object");
                 }
 
-                // Add step methods
+                // Add ingredient methods
                 var ingredientEntity = _mapper.Map<IngredientForCreationDto, Ingredient>(ingredientForCreation);
 
                 Recipe? currentRecipe = await _recipeRepository.FindRecipeAsync(recipeId);
@@ -248,6 +252,48 @@ namespace CookingByMe_back.Controllers
             catch (Exception ex)
             {
                 //_logger.LogError($"Something went wrong inside CreateIngredient action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpPatch("{recipeId}/groupe/{groupId}")]
+        public async Task<IActionResult> AddRecipeAsync(int recipeId, int groupId)
+        {
+            try
+            {
+                if (groupId.Equals(0))
+                {
+                    //_logger.LogError("recipeId sent from client is invalid.");
+                    return BadRequest("recipeId is invalid");
+                }
+                if (!ModelState.IsValid)
+                {
+                    //_logger.LogError("Invalid recipeForGroupDto object sent from client.");
+                    return BadRequest("Invalid model object");
+                }
+
+                // Add recipe methods
+                Group? groupEntity = await _groupRepository.FindGroupAsync(groupId);
+                if (groupEntity == null)
+                {
+                    return NotFound("Group not found.");
+                }
+
+                Recipe? currentRecipe = await _recipeRepository.FindRecipeAsync(recipeId);
+                if (currentRecipe == null)
+                {
+                    return NotFound("Recipe not found.");
+                }
+
+                _recipeRepository.AddGroup(currentRecipe, groupEntity);
+                await _recipeRepository.SaveAsync();
+
+
+                return Ok(currentRecipe);
+            }
+            catch (Exception ex)
+            {
+                //_logger.LogError($"Something went wrong inside AddRecipe action: {ex.Message}");
                 return StatusCode(500, "Internal server error");
             }
         }

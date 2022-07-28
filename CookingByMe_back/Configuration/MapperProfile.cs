@@ -13,6 +13,8 @@ namespace CookingByMe_back.Configuration
             CreateMap<Recipe, RecipeDto>();
             CreateMap<RecipeForCreationDto, Recipe>();
             CreateMap<RecipeForUpdateDto, Recipe>();
+            CreateMap<RecipeForGroupDto, Recipe>();
+            CreateMap<Recipe, RecipeForGroupDto>();
 
             CreateMap<Step, StepDto>();
             CreateMap<StepForCreationDto, Step>();

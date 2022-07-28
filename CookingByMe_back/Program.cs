@@ -3,6 +3,7 @@ using CookingByMe_back.Core;
 using CookingByMe_back.Core.IRepository;
 using CookingByMe_back.Core.Repository;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,10 +14,12 @@ builder.Services.AddDbContext<CookingByMeContext>(o =>
     o.UseSqlServer(Configuration.GetConnectionString("PrimaryConnexion"))
 );
 
-
 builder.Services.AddAutoMapper(typeof(MapperProfile));
 
 builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(x =>
+                x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

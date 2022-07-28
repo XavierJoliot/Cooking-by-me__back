@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CookingByMe_back.Core.IRepository;
 using CookingByMe_back.Models.GroupModels;
+using CookingByMe_back.Models.RecipeModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CookingByMe_back.Controllers
@@ -12,11 +13,13 @@ namespace CookingByMe_back.Controllers
         private readonly IMapper _mapper;
         //private readonly ILogger _logger;
         private readonly IGroupRepository _groupRepository;
+        private readonly IRecipeRepository _recipeRepository;
 
-        public GroupController(IMapper mapper, IGroupRepository groupRepository)
+        public GroupController(IMapper mapper, IGroupRepository groupRepository, IRecipeRepository recipeRepository)
         {
             _mapper = mapper;
             _groupRepository = groupRepository;
+            _recipeRepository = recipeRepository;
             //_logger = logger;
         }
 
@@ -134,6 +137,48 @@ namespace CookingByMe_back.Controllers
             catch (Exception ex)
             {
                 //_logger.LogError($"Something went wrong inside UpdateGroupAsync action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpPatch("{groupId}/recette/{recipeId}")]
+        public async Task<IActionResult> AddRecipeAsync(int groupId, int recipeId)
+        {
+            try
+            {
+                if (recipeId.Equals(0))
+                {
+                    //_logger.LogError("recipeId sent from client is invalid.");
+                    return BadRequest("recipeId is invalid");
+                }
+                if (!ModelState.IsValid)
+                {
+                    //_logger.LogError("Invalid recipeForGroupDto object sent from client.");
+                    return BadRequest("Invalid model object");
+                }
+
+                // Add recipe methods
+                Recipe? recipeEntity = await _recipeRepository.FindRecipeAsync(recipeId);
+                if (recipeEntity == null)
+                {
+                    return NotFound("Group not found.");
+                }
+
+                Group? currentGroup = await _groupRepository.FindGroupAsync(groupId);
+                if (currentGroup == null)
+                {
+                    return NotFound("Group not found.");
+                }
+
+                _groupRepository.AddRecipe(currentGroup, recipeEntity);
+                await _groupRepository.SaveAsync();
+
+
+                return Ok(currentGroup);
+            }
+            catch (Exception ex)
+            {
+                //_logger.LogError($"Something went wrong inside AddRecipe action: {ex.Message}");
                 return StatusCode(500, "Internal server error");
             }
         }
