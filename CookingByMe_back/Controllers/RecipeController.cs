@@ -1,10 +1,6 @@
 ﻿using AutoMapper;
 using CookingByMe_back.Core.IRepository;
-using CookingByMe_back.Models.GroupModels;
-using CookingByMe_back.Models.GroupRecipeModels;
-using CookingByMe_back.Models.IngredientModels;
 using CookingByMe_back.Models.RecipeModels;
-using CookingByMe_back.Models.StepModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CookingByMe_back.Controllers

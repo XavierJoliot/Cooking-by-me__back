@@ -2,7 +2,6 @@
 using CookingByMe_back.Core.IRepository;
 using CookingByMe_back.Models.GroupModels;
 using CookingByMe_back.Models.GroupRecipeModels;
-using CookingByMe_back.Models.RecipeModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CookingByMe_back.Controllers
