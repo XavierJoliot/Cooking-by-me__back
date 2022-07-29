@@ -7,13 +7,13 @@ namespace CookingByMe_back.Models.RecipeModels
     public class RecipeForCreationDto
     {
         [Required]
-        public string UserId { get; set; }
+        public string UserId { get; set; } = string.Empty;
 
         public int? GroupId { get; set; }
 
         [Required]
         [MaxLength(255)]
-        public string Title { get; set; }
+        public string Title { get; set; } = string.Empty;
 
         public int? Duration { get; set; }
 

@@ -4,7 +4,7 @@
 
 namespace CookingByMe_back.Core.Migrations
 {
-    public partial class UpdateRecipe : Migration
+    public partial class UpdateModels : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

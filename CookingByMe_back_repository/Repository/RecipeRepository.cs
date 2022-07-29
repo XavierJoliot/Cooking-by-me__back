@@ -1,8 +1,6 @@
 ﻿using CookingByMe_back.Core.IRepository;
-using CookingByMe_back.Models.GroupModels;
 using CookingByMe_back.Models.IngredientModels;
 using CookingByMe_back.Models.RecipeModels;
-using CookingByMe_back.Models.StepModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace CookingByMe_back.Core.Repository
@@ -17,6 +15,7 @@ namespace CookingByMe_back.Core.Repository
 
         public async Task<List<Recipe>> GetAllRecipesAsync()
         {
+            //return await FindAll().Include(r => r.Group_Recipe).ToListAsync();
             return await FindAll().ToListAsync();
         }
 
@@ -25,28 +24,13 @@ namespace CookingByMe_back.Core.Repository
             return await FindByCondition(r => r.Id.Equals(id))
                 .Include(r => r.StepsList)
                 .Include(r => r.IngredientsList)
-                .Include(r => r.GroupList)
+                .Include(r => r.Group_Recipe)
                 .FirstOrDefaultAsync();
-        }
-
-        public async Task<Recipe?> FindRecipeAsync(int id)
-        {
-            return await FindEntityAsync(id);
-        }
-
-        public void AddGroup(Recipe recipe, Group group)
-        {
-            recipe.GroupList.Add(group);
-        }
-
-        public void CreateStep(Recipe recipe, Step step)
-        {
-            recipe.StepsList.Add(step);
         }
 
         public void CreateIngredient(Recipe recipe, Ingredient ingredient)
         {
-            recipe.IngredientsList.Add(ingredient);
+            recipe.IngredientsList!.Add(ingredient);
         }
 
         public void CreateRecipe(Recipe recipe)

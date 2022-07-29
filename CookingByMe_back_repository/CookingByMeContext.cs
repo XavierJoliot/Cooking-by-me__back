@@ -1,4 +1,5 @@
 ﻿using CookingByMe_back.Models.GroupModels;
+using CookingByMe_back.Models.GroupRecipeModels;
 using CookingByMe_back.Models.IngredientModels;
 using CookingByMe_back.Models.RecipeModels;
 using CookingByMe_back.Models.StepModels;
@@ -14,6 +15,7 @@ namespace CookingByMe_back.Core
 
         public DbSet<Recipe> Recipe { get; set; }
         public DbSet<Group> Group { get; set; }
+        public DbSet<Group_Recipe> Group_Recipe { get; set; }
         public DbSet<Ingredient> Ingredient { get; set; }
         public DbSet<Step> Step { get; set; }
 
@@ -21,19 +23,22 @@ namespace CookingByMe_back.Core
         {
             var recipe = modelBuilder.Entity<Recipe>();
             var group = modelBuilder.Entity<Group>();
+            var groupRecipe = modelBuilder.Entity<Group_Recipe>();
             var ingredient = modelBuilder.Entity<Ingredient>();
             var step = modelBuilder.Entity<Step>();
 
 
             recipe.HasKey(r => r.Id);
             recipe.Property(r => r.CreatedAt).HasDefaultValueSql("getdate()");
-            recipe.HasMany(r => r.StepsList).WithOne().OnDelete(DeleteBehavior.Cascade);
-            recipe.HasMany(r => r.IngredientsList).WithOne().OnDelete(DeleteBehavior.Cascade);
-
+            recipe.HasMany(r => r.StepsList).WithOne(s => s.Recipe).HasForeignKey(s => s.RecipeId).OnDelete(DeleteBehavior.Cascade);
+            recipe.HasMany(r => r.IngredientsList).WithOne(i => i.Recipe).HasForeignKey(i => i.RecipeId).OnDelete(DeleteBehavior.Cascade);
 
             group.HasKey(g => g.Id);
             group.Property(g => g.CreatedAt).HasDefaultValueSql("getdate()");
-            group.HasMany(g => g.RecipesList).WithMany(r => r.GroupList);
+
+            groupRecipe.HasKey(gr => gr.Id);
+            groupRecipe.HasOne(gr => gr.Recipe).WithMany(r => r.Group_Recipe).HasForeignKey(gr => gr.RecipeId);
+            groupRecipe.HasOne(gr => gr.Group).WithMany(g => g.Group_Recipe).HasForeignKey(gr => gr.GroupId);
 
             ingredient.HasKey(i => i.Id);
             ingredient.Property(i => i.CreatedAt).HasDefaultValueSql("getdate()");
