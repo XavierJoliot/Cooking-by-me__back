@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CookingByMe_back.Models.GroupModels
 {
@@ -11,7 +13,10 @@ namespace CookingByMe_back.Models.GroupModels
         [MaxLength(255)]
         public string Title { get; set; } = string.Empty;
 
-        public string? ImagePath { get; set; }
+        public string? ImageName { get; set; }
+
+        [NotMapped]
+        public IFormFile? ImagePath { get; set; }
 
         public string? Description { get; set; }
     }

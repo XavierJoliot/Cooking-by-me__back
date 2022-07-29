@@ -21,7 +21,7 @@ namespace CookingByMe_back.Models.RecipeModels
         [Required]
         public int Quantity { get; set; }
 
-        public string? ImagePath { get; set; }
+        public string? ImageName { get; set; }
 
         public string? Note { get; set; }
 

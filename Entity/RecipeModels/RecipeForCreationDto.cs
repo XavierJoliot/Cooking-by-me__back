@@ -1,6 +1,8 @@
 ﻿using CookingByMe_back.Models.IngredientModels;
 using CookingByMe_back.Models.StepModels;
+using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CookingByMe_back.Models.RecipeModels
 {
@@ -20,7 +22,10 @@ namespace CookingByMe_back.Models.RecipeModels
         [Required]
         public int Quantity { get; set; }
 
-        public string? ImagePath { get; set; }
+        public string? ImageName { get; set; }
+
+        [NotMapped]
+        public IFormFile? ImagePath { get; set; }
 
         public string? Note { get; set; }
 

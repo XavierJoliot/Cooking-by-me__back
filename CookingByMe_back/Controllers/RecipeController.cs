@@ -19,19 +19,22 @@ namespace CookingByMe_back.Controllers
         private readonly IStepRepository _stepRepository;
         private readonly IIngredientRepository _ingredientRepository;
         private readonly IGroupRepository _groupRepository;
+        private readonly IWebHostEnvironment _hostEnvironment;
 
         public RecipeController(
             IMapper mapper, 
             IRecipeRepository recipeRepository,
             IStepRepository stepRepository,
             IIngredientRepository ingredientRepository,
-            IGroupRepository groupRepository)
+            IGroupRepository groupRepository,
+            IWebHostEnvironment hostEnvironment)
         {
             _mapper = mapper;
             _recipeRepository = recipeRepository;
             _stepRepository = stepRepository;
             _ingredientRepository = ingredientRepository;
             _groupRepository = groupRepository;
+            _hostEnvironment = hostEnvironment;
             //_logger = logger;
         }
 
@@ -72,6 +75,17 @@ namespace CookingByMe_back.Controllers
                 {
                     //_logger.LogError("Invalid RecipeForCreation object sent from client.");
                     return BadRequest("Invalid model object");
+                }
+
+                // image add
+                string wwwRootPath = _hostEnvironment.WebRootPath;
+                string fileName = Path.GetFileNameWithoutExtension(recipeForCreation.ImagePath!.FileName);
+                string extension = Path.GetExtension(recipeForCreation.ImagePath!.FileName);
+                recipeForCreation.ImageName=fileName = fileName + DateTime.Now.ToString("yymmssfff");
+                string path = Path.Combine(wwwRootPath + "/Image/", fileName);
+                using (var fileStream = new FileStream(path, FileMode.Create))
+                {
+                    await recipeForCreation.ImagePath.CopyToAsync(fileStream);
                 }
 
                 // Add recipe methods
@@ -129,6 +143,17 @@ namespace CookingByMe_back.Controllers
                 {
                     //_logger.LogError("Invalid recipe object sent from client.");
                     return BadRequest("Invalid model object");
+                }
+
+                // image add
+                string wwwRootPath = _hostEnvironment.WebRootPath;
+                string fileName = Path.GetFileNameWithoutExtension(recipe.ImagePath!.FileName);
+                string extension = Path.GetExtension(recipe.ImagePath!.FileName);
+                recipe.ImageName = fileName = fileName + DateTime.Now.ToString("yymmssfff");
+                string path = Path.Combine(wwwRootPath + "/Image/", fileName);
+                using (var fileStream = new FileStream(path, FileMode.Create))
+                {
+                    await recipe.ImagePath.CopyToAsync(fileStream);
                 }
 
                 var recipeEntity = await _recipeRepository.GetRecipeByIdAsync(id);

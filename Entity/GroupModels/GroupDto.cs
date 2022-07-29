@@ -14,7 +14,7 @@ namespace CookingByMe_back.Models.GroupModels
         [Required]
         public string Title { get; set; } = string.Empty;
 
-        public string? ImagePath { get; set; }
+        public string? ImageName { get; set; }
 
         public string? Description { get; set; }
 

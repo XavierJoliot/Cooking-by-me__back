@@ -15,12 +15,18 @@ namespace CookingByMe_back.Controllers
         //private readonly ILogger _logger;
         private readonly IGroupRepository _groupRepository;
         private readonly IRecipeRepository _recipeRepository;
+        private readonly IWebHostEnvironment _hostEnvironment;
 
-        public GroupController(IMapper mapper, IGroupRepository groupRepository, IRecipeRepository recipeRepository)
+        public GroupController(
+            IMapper mapper, 
+            IGroupRepository groupRepository, 
+            IRecipeRepository recipeRepository, 
+            IWebHostEnvironment hostEnvironment)
         {
             _mapper = mapper;
             _groupRepository = groupRepository;
             _recipeRepository = recipeRepository;
+            _hostEnvironment = hostEnvironment;
             //_logger = logger;
         }
 
@@ -38,6 +44,17 @@ namespace CookingByMe_back.Controllers
                 {
                     //_logger.LogError("Invalid GroupForCreation object sent from client.");
                     return BadRequest("Invalid model object");
+                }
+
+                // image add
+                string wwwRootPath = _hostEnvironment.WebRootPath;
+                string fileName = Path.GetFileNameWithoutExtension(groupForCreation.ImagePath!.FileName);
+                string extension = Path.GetExtension(groupForCreation.ImagePath!.FileName);
+                groupForCreation.ImageName = fileName = fileName + DateTime.Now.ToString("yymmssfff");
+                string path = Path.Combine(wwwRootPath + "/Image/", fileName);
+                using (var fileStream = new FileStream(path, FileMode.Create))
+                {
+                    await groupForCreation.ImagePath.CopyToAsync(fileStream);
                 }
 
                 // Add recipe methods
@@ -117,6 +134,17 @@ namespace CookingByMe_back.Controllers
                 {
                     //_logger.LogError("Invalid group object sent from client.");
                     return BadRequest("Invalid model object");
+                }
+
+                // image add
+                string wwwRootPath = _hostEnvironment.WebRootPath;
+                string fileName = Path.GetFileNameWithoutExtension(group.ImagePath!.FileName);
+                string extension = Path.GetExtension(group.ImagePath!.FileName);
+                group.ImageName = fileName = fileName + DateTime.Now.ToString("yymmssfff");
+                string path = Path.Combine(wwwRootPath + "/Image/", fileName);
+                using (var fileStream = new FileStream(path, FileMode.Create))
+                {
+                    await group.ImagePath.CopyToAsync(fileStream);
                 }
 
                 var groupEntity = await _groupRepository.GetGroupByIdAsync(id);
