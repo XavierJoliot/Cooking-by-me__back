@@ -20,6 +20,40 @@ namespace CookingByMe_back.Controllers
             //_logger = logger;
         }
 
+        [HttpPost]
+        public async Task<IActionResult> CreateIngredientAsync(IngredientForCreationDto ingredientForCreation)
+        {
+            try
+            {
+                if (ingredientForCreation == null)
+                {
+                    //_logger.LogError("IngredientForCreation object sent from client is null.");
+                    return BadRequest("IngredientForCreation object is null");
+                }
+                if (!ModelState.IsValid)
+                {
+                    //_logger.LogError("Invalid ingredientForCreation object sent from client.");
+                    return BadRequest("Invalid model object");
+                }
+
+                // Add ingredient methods
+                var ingredientEntity = _mapper.Map<IngredientForCreationDto, Ingredient>(ingredientForCreation);
+
+                _ingredientRepository.Create(ingredientEntity);
+                await _ingredientRepository.SaveAsync();
+
+
+                var createdIngredient = _mapper.Map<Ingredient, IngredientDto>(ingredientEntity);
+
+                return Ok(createdIngredient);
+            }
+            catch (Exception ex)
+            {
+                //_logger.LogError($"Something went wrong inside CreateIngredient action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetIngredientByIdAsync(int id)
         {

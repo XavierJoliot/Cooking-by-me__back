@@ -33,7 +33,40 @@ namespace CookingByMe_back.Controllers
 
             return Ok(stepResult);
         }
-       
+
+        [HttpPost]
+        public async Task<IActionResult> CreateStepAsync(StepForCreationDto stepForCreation)
+        {
+            try
+            {
+                if (stepForCreation == null)
+                {
+                    //_logger.LogError("StepForCreation object sent from client is null.");
+                    return BadRequest("StepForCreation object is null");
+                }
+                if (!ModelState.IsValid)
+                {
+                    //_logger.LogError("Invalid stepForCreation object sent from client.");
+                    return BadRequest("Invalid model object");
+                }
+
+                // Add step methods
+                var stepEntity = _mapper.Map<StepForCreationDto, Step>(stepForCreation);
+
+                _stepRepository.Create(stepEntity);
+                await _stepRepository.SaveAsync();
+
+                var createdStep = _mapper.Map<Step, StepDto>(stepEntity);
+
+                return Ok(createdStep);
+            }
+            catch (Exception ex)
+            {
+                //_logger.LogError($"Something went wrong inside CreateStep action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteStepAsync(int id)
         {

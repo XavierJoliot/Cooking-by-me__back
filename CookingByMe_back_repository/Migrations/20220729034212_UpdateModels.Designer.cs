@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CookingByMe_back.Core.Migrations
 {
     [DbContext(typeof(CookingByMeContext))]
-    [Migration("20220728061654_UpdateStepAndIngredient")]
-    partial class UpdateStepAndIngredient
+    [Migration("20220729034212_UpdateModels")]
+    partial class UpdateModels
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -57,6 +57,29 @@ namespace CookingByMe_back.Core.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Group");
+                });
+
+            modelBuilder.Entity("CookingByMe_back.Models.GroupRecipeModels.Group_Recipe", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("GroupId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RecipeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GroupId");
+
+                    b.HasIndex("RecipeId");
+
+                    b.ToTable("Group_Recipe");
                 });
 
             modelBuilder.Entity("CookingByMe_back.Models.IngredientModels.Ingredient", b =>
@@ -172,56 +195,56 @@ namespace CookingByMe_back.Core.Migrations
                     b.ToTable("Step");
                 });
 
-            modelBuilder.Entity("GroupRecipe", b =>
+            modelBuilder.Entity("CookingByMe_back.Models.GroupRecipeModels.Group_Recipe", b =>
                 {
-                    b.Property<int>("GroupListId")
-                        .HasColumnType("int");
+                    b.HasOne("CookingByMe_back.Models.GroupModels.Group", "Group")
+                        .WithMany("Group_Recipe")
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Property<int>("RecipesListId")
-                        .HasColumnType("int");
+                    b.HasOne("CookingByMe_back.Models.RecipeModels.Recipe", "Recipe")
+                        .WithMany("Group_Recipe")
+                        .HasForeignKey("RecipeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasKey("GroupListId", "RecipesListId");
+                    b.Navigation("Group");
 
-                    b.HasIndex("RecipesListId");
-
-                    b.ToTable("GroupRecipe");
+                    b.Navigation("Recipe");
                 });
 
             modelBuilder.Entity("CookingByMe_back.Models.IngredientModels.Ingredient", b =>
                 {
-                    b.HasOne("CookingByMe_back.Models.RecipeModels.Recipe", null)
+                    b.HasOne("CookingByMe_back.Models.RecipeModels.Recipe", "Recipe")
                         .WithMany("IngredientsList")
                         .HasForeignKey("RecipeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Recipe");
                 });
 
             modelBuilder.Entity("CookingByMe_back.Models.StepModels.Step", b =>
                 {
-                    b.HasOne("CookingByMe_back.Models.RecipeModels.Recipe", null)
+                    b.HasOne("CookingByMe_back.Models.RecipeModels.Recipe", "Recipe")
                         .WithMany("StepsList")
                         .HasForeignKey("RecipeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Recipe");
                 });
 
-            modelBuilder.Entity("GroupRecipe", b =>
+            modelBuilder.Entity("CookingByMe_back.Models.GroupModels.Group", b =>
                 {
-                    b.HasOne("CookingByMe_back.Models.GroupModels.Group", null)
-                        .WithMany()
-                        .HasForeignKey("GroupListId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CookingByMe_back.Models.RecipeModels.Recipe", null)
-                        .WithMany()
-                        .HasForeignKey("RecipesListId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Group_Recipe");
                 });
 
             modelBuilder.Entity("CookingByMe_back.Models.RecipeModels.Recipe", b =>
                 {
+                    b.Navigation("Group_Recipe");
+
                     b.Navigation("IngredientsList");
 
                     b.Navigation("StepsList");

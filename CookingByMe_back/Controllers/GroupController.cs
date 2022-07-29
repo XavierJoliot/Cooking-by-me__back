@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CookingByMe_back.Core.IRepository;
 using CookingByMe_back.Models.GroupModels;
+using CookingByMe_back.Models.GroupRecipeModels;
 using CookingByMe_back.Models.RecipeModels;
 using Microsoft.AspNetCore.Mvc;
 
@@ -141,44 +142,63 @@ namespace CookingByMe_back.Controllers
             }
         }
 
-        [HttpPatch("{groupId}/recette/{recipeId}")]
-        public async Task<IActionResult> AddRecipeAsync(int groupId, int recipeId)
+        [HttpPost("recette")]
+        public async Task<IActionResult> AddRecipeToGroup(Group_RecipeForCreationDto groupRecipeForCreation)
         {
             try
             {
-                if (recipeId.Equals(0))
+                if (groupRecipeForCreation == null)
                 {
-                    //_logger.LogError("recipeId sent from client is invalid.");
-                    return BadRequest("recipeId is invalid");
+                    //_logger.LogError("groupRecipeForCreation object sent from client is null.");
+                    return BadRequest("groupRecipeForCreation object is null");
                 }
                 if (!ModelState.IsValid)
                 {
-                    //_logger.LogError("Invalid recipeForGroupDto object sent from client.");
+                    //_logger.LogError("Invalid groupRecipeForCreation object sent from client.");
                     return BadRequest("Invalid model object");
+                }
+                var recipeExist = _groupRepository.FindRecipeFromGroup(groupRecipeForCreation.GroupId, groupRecipeForCreation.RecipeId);
+                if(recipeExist != null)
+                {
+                    return BadRequest("Recipe already exist in this group");
                 }
 
                 // Add recipe methods
-                Recipe? recipeEntity = await _recipeRepository.FindRecipeAsync(recipeId);
-                if (recipeEntity == null)
-                {
-                    return NotFound("Group not found.");
-                }
-
-                Group? currentGroup = await _groupRepository.FindGroupAsync(groupId);
-                if (currentGroup == null)
-                {
-                    return NotFound("Group not found.");
-                }
-
-                _groupRepository.AddRecipe(currentGroup, recipeEntity);
+                var groupRecipeEntity = _mapper.Map<Group_RecipeForCreationDto, Group_Recipe>(groupRecipeForCreation);
+                _groupRepository.AddRecipeAsync(groupRecipeEntity);
                 await _groupRepository.SaveAsync();
 
+                var groupRecipeCreated = _mapper.Map<Group_Recipe, Group_RecipeForGroupDto>(groupRecipeEntity);
 
-                return Ok(currentGroup);
+                return Ok(groupRecipeCreated);
             }
             catch (Exception ex)
             {
-                //_logger.LogError($"Something went wrong inside AddRecipe action: {ex.Message}");
+                //_logger.LogError($"Something went wrong inside groupRecipeForCreation action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpDelete("{groupId}/recette/{recipeId}")]
+        public async Task<IActionResult> RemoveRecipeFromGroup(int groupId, int recipeId)
+        {
+            try
+            {
+                var CurrentRecipe = await _groupRepository.FindRecipeFromGroup(groupId, recipeId);
+                if (CurrentRecipe == null)
+                {
+                    //_logger.LogError($"Recipe with id: {id}, hasn't been found in db.");
+                    return NotFound();
+                }
+                
+                _groupRepository.RemoveRecipeFromGroup(CurrentRecipe);
+                await _groupRepository.SaveAsync();
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                //_logger.LogError($"Something went wrong inside DeleteRecipeFromGroup action: {ex.Message}");
                 return StatusCode(500, "Internal server error");
             }
         }

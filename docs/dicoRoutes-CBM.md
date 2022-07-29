@@ -8,27 +8,27 @@
 | /api/recette/`{id}` | `PUT` `PATCH` | RecipeController| updateAsync`(id)` | 
 | /api/recette | `POST` | RecipeController | addAsync | 
 | /api/recette/`{id}` | `DELETE` | RecipeController | deleteAsync`(id)` |
+| /api/recette/`{recipeId}`/ingredient | `GET` | RecipeController | getAllByRecipeIdAsync`(recipeId)` | 
+| /api/recette/`{recipeId}`/etape | `GET` | RecipeController | getAllByRecipeIdAsync(`recipeId`) | 
 | /api/recette/groupe/`{id}` | `GET` | RecipeController | getAllByGroupIdAsync`(id)` |
 
 
 ## INGREDIENTS
 | URL | Méthode HTTP | Controller | METHODE |
 |--|--|--|--|
-| /api/recette/`{recipeId}`/ingredient | `GET` | IngredientController | getAllByRecipeIdAsync`(recipeId)` | 
 | /api/ingredient/`{id}` | `GET` | IngredientController | getByIdAsync`(id)` | 
 | /api/ingredient/`{id}` | `PUT` `PATCH` | IngredientController| updateAsync`(id)` | 
-| /api/recette/`{recipeId}`/ingredient | `POST` | IngredientController | addAsync`(recipeId)` | 
-| /api/recette/ingredient/`{id}` | `DELETE` | IngredientController | deleteAsync`(id)` |
+| /api/ingredient | `POST` | IngredientController | addAsync | 
+| /api/ingredient/`{id}` | `DELETE` | IngredientController | deleteAsync`(id)` |
 
 
 ## ETAPES
 | URL | Méthode HTTP | Controller | METHODE |
 |--|--|--|--|
-| /api/recette/`{recipeId}`/etape | `GET` | StepController | getAllByRecipeIdAsync(`recipeId`) | 
-| /api/recette/etape/`{id}` | `GET` | StepController | getByIdAsync`(id)` | 
-| /api/recette/etape/`{id}` | `PUT` `PATCH` | StepController| updateAsync`(id)` | 
-| /api/recette/`{recipeId}`/etape | `POST` | StepController | addAsync`(recipeId)` | 
-| /api/recette/etape/`{id}` | `DELETE` | StepController | deleteAsync`(id)` |
+| /api/etape/`{id}` | `GET` | StepController | getByIdAsync`(id)` | 
+| /api/etape/`{id}` | `PUT` `PATCH` | StepController| updateAsync`(id)` | 
+| /api/etape | `POST` | StepController | addAsync | 
+| /api/etape/`{id}` | `DELETE` | StepController | deleteAsync`(id)` |
 
 
 ## GROUPES

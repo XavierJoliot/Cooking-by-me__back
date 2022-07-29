@@ -48,24 +48,26 @@ namespace CookingByMe_back.Core.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "GroupRecipe",
+                name: "Group_Recipe",
                 columns: table => new
                 {
-                    GroupListId = table.Column<int>(type: "int", nullable: false),
-                    RecipesListId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RecipeId = table.Column<int>(type: "int", nullable: false),
+                    GroupId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GroupRecipe", x => new { x.GroupListId, x.RecipesListId });
+                    table.PrimaryKey("PK_Group_Recipe", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_GroupRecipe_Group_GroupListId",
-                        column: x => x.GroupListId,
+                        name: "FK_Group_Recipe_Group_GroupId",
+                        column: x => x.GroupId,
                         principalTable: "Group",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_GroupRecipe_Recipe_RecipesListId",
-                        column: x => x.RecipesListId,
+                        name: "FK_Group_Recipe_Recipe_RecipeId",
+                        column: x => x.RecipeId,
                         principalTable: "Recipe",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -82,7 +84,7 @@ namespace CookingByMe_back.Core.Migrations
                     Unit = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()"),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    RecipeId = table.Column<int>(type: "int", nullable: true)
+                    RecipeId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -91,7 +93,8 @@ namespace CookingByMe_back.Core.Migrations
                         name: "FK_Ingredient_Recipe_RecipeId",
                         column: x => x.RecipeId,
                         principalTable: "Recipe",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -104,7 +107,7 @@ namespace CookingByMe_back.Core.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()"),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    RecipeId = table.Column<int>(type: "int", nullable: true)
+                    RecipeId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -113,13 +116,19 @@ namespace CookingByMe_back.Core.Migrations
                         name: "FK_Step_Recipe_RecipeId",
                         column: x => x.RecipeId,
                         principalTable: "Recipe",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_GroupRecipe_RecipesListId",
-                table: "GroupRecipe",
-                column: "RecipesListId");
+                name: "IX_Group_Recipe_GroupId",
+                table: "Group_Recipe",
+                column: "GroupId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Group_Recipe_RecipeId",
+                table: "Group_Recipe",
+                column: "RecipeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Ingredient_RecipeId",
@@ -135,7 +144,7 @@ namespace CookingByMe_back.Core.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "GroupRecipe");
+                name: "Group_Recipe");
 
             migrationBuilder.DropTable(
                 name: "Ingredient");
