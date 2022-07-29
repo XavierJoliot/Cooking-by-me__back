@@ -4,6 +4,7 @@ using CookingByMe_back.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CookingByMe_back.Core.Migrations
 {
     [DbContext(typeof(CookingByMeContext))]
-    partial class CookingByMeContextModelSnapshot : ModelSnapshot
+    [Migration("20220727232916_InitialMigration")]
+    partial class InitialMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -78,7 +80,7 @@ namespace CookingByMe_back.Core.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<int>("RecipeId")
+                    b.Property<int?>("RecipeId")
                         .HasColumnType("int");
 
                     b.Property<string>("Unit")
@@ -157,7 +159,7 @@ namespace CookingByMe_back.Core.Migrations
                     b.Property<int>("Order")
                         .HasColumnType("int");
 
-                    b.Property<int>("RecipeId")
+                    b.Property<int?>("RecipeId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -188,19 +190,15 @@ namespace CookingByMe_back.Core.Migrations
             modelBuilder.Entity("CookingByMe_back.Models.IngredientModels.Ingredient", b =>
                 {
                     b.HasOne("CookingByMe_back.Models.RecipeModels.Recipe", null)
-                        .WithMany("IngredientsList")
-                        .HasForeignKey("RecipeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("IngredientList")
+                        .HasForeignKey("RecipeId");
                 });
 
             modelBuilder.Entity("CookingByMe_back.Models.StepModels.Step", b =>
                 {
                     b.HasOne("CookingByMe_back.Models.RecipeModels.Recipe", null)
-                        .WithMany("StepsList")
-                        .HasForeignKey("RecipeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("StepList")
+                        .HasForeignKey("RecipeId");
                 });
 
             modelBuilder.Entity("GroupRecipe", b =>
@@ -220,9 +218,9 @@ namespace CookingByMe_back.Core.Migrations
 
             modelBuilder.Entity("CookingByMe_back.Models.RecipeModels.Recipe", b =>
                 {
-                    b.Navigation("IngredientsList");
+                    b.Navigation("IngredientList");
 
-                    b.Navigation("StepsList");
+                    b.Navigation("StepList");
                 });
 #pragma warning restore 612, 618
         }

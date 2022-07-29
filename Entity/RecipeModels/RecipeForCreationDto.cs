@@ -1,6 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using CookingByMe_back.Models.IngredientModels;
+using CookingByMe_back.Models.StepModels;
+using System.ComponentModel.DataAnnotations;
 
-namespace CookingByMe_back.Models.Recipe
+namespace CookingByMe_back.Models.RecipeModels
 {
     public class RecipeForCreationDto
     {
@@ -21,5 +23,9 @@ namespace CookingByMe_back.Models.Recipe
         public string? ImagePath { get; set; }
 
         public string? Note { get; set; }
+
+        public List<StepForCreationDto>? StepsList { get; set; }
+
+        public List<IngredientForCreationDto>? IngredientsList { get; set; }
     }
 }

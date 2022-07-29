@@ -1,17 +1,21 @@
-﻿namespace CookingByMe_back.Core.IRepository
+﻿using System.Linq.Expressions;
+
+namespace CookingByMe_back.Core.IRepository
 {
-    public interface IRepository<T>
+    public interface IRepository<TEntity> where TEntity : class
     {
-        public Task<List<T>> GetAllAsync();
+        IQueryable<TEntity> FindAll();
 
-        public Task<T> GetByIdAsync(int id);
+        IQueryable<TEntity> FindByCondition(Expression<Func<TEntity, bool>> expression);
 
-        public Task<T> AddAsync(T entity);
+        Task<TEntity?> FindEntityAsync(int id);
 
-        public Task<T> UpdateAsync(T entity);
+        void Create(TEntity entity);
 
-        public Task<bool> Delete(int id);
+        void Update(TEntity entity);
 
-        public Task<bool> SaveAsync();
+        void Delete(TEntity entity);
+
+        Task SaveAsync();
     }
 }

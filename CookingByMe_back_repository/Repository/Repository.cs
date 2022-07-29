@@ -1,44 +1,55 @@
 ﻿using CookingByMe_back.Core.IRepository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using CookingByMe_back.Models;
+using CookingByMe_back.Models.StepModels;
+using Microsoft.EntityFrameworkCore;
+using System.Data.Entity.Core;
+using System.Linq.Expressions;
 
 namespace CookingByMe_back.Core.Repository
 {
-    public class Repository<T> : IRepository<T> where T : new()
+    public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
-        public Task<List<T>> GetAllAsync()
+        private readonly CookingByMeContext context;
+
+        public Repository(CookingByMeContext context)
         {
-            return Task.FromResult(new List<T>());
+            this.context = context;
+        }
+
+        public IQueryable<TEntity> FindAll()
+        {
+            return context.Set<TEntity>().AsNoTracking();
         }
 
 
-        public Task<T> GetByIdAsync(int id)
+        public IQueryable<TEntity> FindByCondition(Expression<Func<TEntity, bool>> expression)
         {
-            T entity = new();
-            return Task.FromResult(entity);
+            return context.Set<TEntity>().Where(expression).AsNoTracking();
         }
 
-        public Task<T> AddAsync(T entity)
+        public async Task<TEntity?> FindEntityAsync(int id)
         {
-            return Task.FromResult(entity);
+            return await context.Set<TEntity>().FindAsync(id);
         }
 
-        public Task<T> UpdateAsync(T entity)
+        public void Create(TEntity entity)
         {
-            return Task.FromResult(entity);
+            context.Set<TEntity>().Add(entity);
         }
 
-        public Task<bool> Delete(int id)
+        public void Update(TEntity entity)
         {
-            return Task.FromResult(true);
+            context.Set<TEntity>().Update(entity);
         }
 
-        public Task<bool> SaveAsync()
+        public void Delete(TEntity entity)
         {
-            return Task.FromResult(false);
+            context.Set<TEntity>().Remove(entity);
+        }
+
+        public async Task SaveAsync()
+        {
+            await context.SaveChangesAsync();
         }
     }
 }

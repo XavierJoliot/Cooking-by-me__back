@@ -1,7 +1,7 @@
-﻿using CookingByMe_back.Models.Group;
-using CookingByMe_back.Models.Ingredient;
-using CookingByMe_back.Models.Recipe;
-using CookingByMe_back.Models.Step;
+﻿using CookingByMe_back.Models.GroupModels;
+using CookingByMe_back.Models.IngredientModels;
+using CookingByMe_back.Models.RecipeModels;
+using CookingByMe_back.Models.StepModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace CookingByMe_back.Core
@@ -19,7 +19,27 @@ namespace CookingByMe_back.Core
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            var recipe = modelBuilder.Entity<Recipe>();
+            var group = modelBuilder.Entity<Group>();
+            var ingredient = modelBuilder.Entity<Ingredient>();
+            var step = modelBuilder.Entity<Step>();
+
+
+            recipe.HasKey(r => r.Id);
+            recipe.Property(r => r.CreatedAt).HasDefaultValueSql("getdate()");
+            recipe.HasMany(r => r.StepsList).WithOne().OnDelete(DeleteBehavior.Cascade);
+            recipe.HasMany(r => r.IngredientsList).WithOne().OnDelete(DeleteBehavior.Cascade);
+
+
+            group.HasKey(g => g.Id);
+            group.Property(g => g.CreatedAt).HasDefaultValueSql("getdate()");
+            group.HasMany(g => g.RecipesList).WithMany(r => r.GroupList);
+
+            ingredient.HasKey(i => i.Id);
+            ingredient.Property(i => i.CreatedAt).HasDefaultValueSql("getdate()");
+
+            step.HasKey(s => s.Id);
+            step.Property(s => s.CreatedAt).HasDefaultValueSql("getdate()");
         }
     }
 }

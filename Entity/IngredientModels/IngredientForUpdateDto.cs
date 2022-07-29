@@ -1,12 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CookingByMe_back.Models.Ingredient
+namespace CookingByMe_back.Models.IngredientModels
 {
-    public class IngredientForCreationDto
+    public class IngredientForUpdateDto
     {
-        [Required]
-        public int RecipeId { get; set; }
-
         [Required]
         [MaxLength(255)]
         public string Name { get; set; }
