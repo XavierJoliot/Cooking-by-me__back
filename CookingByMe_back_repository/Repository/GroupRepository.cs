@@ -14,10 +14,12 @@ namespace CookingByMe_back.Core.Repository
             this._context = context;
         }
 
-        public async Task<List<Group>> GetAllGroupsAsync()
+        public async Task<List<Group>> GetAllGroupsAsync(string userId)
         {
             return await FindAll()
                 .Include(g => g.Group_Recipe)
+                .Where(g => g.UserId == userId)
+                .OrderByDescending(g => g.CreatedAt)
                 .ToListAsync();
         }
 

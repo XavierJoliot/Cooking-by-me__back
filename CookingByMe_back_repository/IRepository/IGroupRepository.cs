@@ -5,7 +5,7 @@ namespace CookingByMe_back.Core.IRepository
 {
     public interface IGroupRepository : IRepository<Group>
     {
-        public Task<List<Group>> GetAllGroupsAsync();
+        public Task<List<Group>> GetAllGroupsAsync(string userId);
 
         public Task<Group?> GetGroupByIdAsync(int id);
 

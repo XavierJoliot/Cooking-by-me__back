@@ -6,8 +6,6 @@ namespace CookingByMe_back.Models.RecipeModels
 {
     public class RecipeForCreationDto
     {
-        [Required]
-        public string UserId { get; set; } = string.Empty;
 
         public int? GroupId { get; set; }
 

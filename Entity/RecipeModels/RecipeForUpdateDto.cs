@@ -1,10 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using CookingByMe_back.Models.IngredientModels;
+using CookingByMe_back.Models.StepModels;
+using System.ComponentModel.DataAnnotations;
 
 namespace CookingByMe_back.Models.RecipeModels
 {
     public class RecipeForUpdateDto
     {
-
         [Required]
         public string Title { get; set; } = string.Empty;
 
@@ -16,6 +17,8 @@ namespace CookingByMe_back.Models.RecipeModels
 
         public string? Note { get; set; }
 
-        public DateTime UpdatedAt { get; set; }
+        public List<StepForCreationFromRecipeDto>? StepsList { get; set; }
+
+        public List<IngredientForCreationFromRecipeDto>? IngredientsList { get; set; }
     }
 }

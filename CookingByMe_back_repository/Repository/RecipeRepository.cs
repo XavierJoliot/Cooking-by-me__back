@@ -25,6 +25,7 @@ namespace CookingByMe_back.Core.Repository
                 .Include(r => r.StepsList)
                 .Include(r => r.IngredientsList)
                 .Include(r => r.Group_Recipe)
+                .OrderByDescending(r => r.CreatedAt)
                 .FirstOrDefaultAsync();
         }
 

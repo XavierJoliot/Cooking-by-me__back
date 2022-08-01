@@ -76,8 +76,12 @@ namespace CookingByMe_back.Controllers
                     return BadRequest("Invalid model object");
                 }
 
+                var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)!.Value;
+
                 // Add recipe methods
                 var recipeEntity = _mapper.Map<RecipeForCreationDto, Recipe>(recipeForCreation);
+
+                recipeEntity.UserId = userId;
 
                 _recipeRepository.CreateRecipe(recipeEntity);
 

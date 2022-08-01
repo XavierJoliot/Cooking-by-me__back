@@ -3,6 +3,7 @@ using CookingByMe_back.Core.IRepository;
 using CookingByMe_back.Models.GroupModels;
 using CookingByMe_back.Models.GroupRecipeModels;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace CookingByMe_back.Controllers
 {
@@ -39,8 +40,13 @@ namespace CookingByMe_back.Controllers
                     return BadRequest("Invalid model object");
                 }
 
+                var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)!.Value;
+
                 // Add recipe methods
                 var groupEntity = _mapper.Map<GroupForCreationDto, Group>(groupForCreation);
+
+                groupEntity.UserId = userId;
+
                 _groupRepository.CreateGroup(groupEntity);
                 await _groupRepository.SaveAsync();
 
@@ -59,7 +65,8 @@ namespace CookingByMe_back.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllGroupsAsync()
         {
-            var groupsList = await _groupRepository.GetAllGroupsAsync();
+            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)!.Value;
+            var groupsList = await _groupRepository.GetAllGroupsAsync(userId);
             //_logger.LogInfo($"Returned all groups from database.");
             var groupsResult = _mapper.Map<List<Group>>(groupsList);
             return Ok(groupsResult);
