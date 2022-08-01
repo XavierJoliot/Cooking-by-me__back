@@ -1,11 +1,16 @@
 ﻿using AutoMapper;
 using CookingByMe_back.Core.IRepository;
 using CookingByMe_back.Models.RecipeModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace CookingByMe_back.Controllers
 {
     [ApiController]
+    [Authorize]
+    [EnableCors]
     [Route("api/recette")]
     public class RecipeController : ControllerBase
     {
@@ -34,7 +39,8 @@ namespace CookingByMe_back.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllRecipesAsync()
         {
-            var recipesList = await _recipeRepository.GetAllRecipesAsync();
+            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)!.Value;
+            var recipesList = await _recipeRepository.GetAllRecipesAsync(userId);
             //_logger.LogInfo($"Returned all recipes from database.");
             var recipesResult = _mapper.Map<List<Recipe>>(recipesList);
             return Ok(recipesResult);
@@ -55,7 +61,7 @@ namespace CookingByMe_back.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateRecipeAsync(RecipeForCreationDto recipeForCreation)
+        public async Task<IActionResult> CreateRecipeAsync([FromBody] RecipeForCreationDto recipeForCreation)
         {
             try
             {

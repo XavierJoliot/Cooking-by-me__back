@@ -24,8 +24,8 @@ namespace CookingByMe_back.Models.RecipeModels
 
         public string? Note { get; set; }
 
-        public List<StepForCreationDto>? StepsList { get; set; }
+        public List<StepForCreationFromRecipeDto>? StepsList { get; set; }
 
-        public List<IngredientForCreationDto>? IngredientsList { get; set; }
+        public List<IngredientForCreationFromRecipeDto>? IngredientsList { get; set; }
     }
 }
