@@ -13,10 +13,10 @@ namespace CookingByMe_back.Core.Repository
             this.context = context;
         }
 
-        public async Task<List<Recipe>> GetAllRecipesAsync()
+        public async Task<List<Recipe>> GetAllRecipesAsync(string userId)
         {
             //return await FindAll().Include(r => r.Group_Recipe).ToListAsync();
-            return await FindAll().ToListAsync();
+            return await FindAll().Where(r => r.UserId == userId).ToListAsync();
         }
 
         public async Task<Recipe?> GetRecipeByIdAsync(int id)
