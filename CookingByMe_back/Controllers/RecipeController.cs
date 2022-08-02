@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CookingByMe_back.Core.IRepository;
+using CookingByMe_back.Models.GroupRecipeModels;
 using CookingByMe_back.Models.RecipeModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
@@ -51,13 +52,12 @@ namespace CookingByMe_back.Controllers
         {
             var recipe = await _recipeRepository.GetRecipeByIdAsync(id);
             //_logger.LogInfo($"Returned a recipe from database.");
-            var recipeResult = _mapper.Map<Recipe>(recipe);
-            if(recipeResult == null)
+            if(recipe == null)
             {
                 return NotFound();
             }
 
-            return Ok(recipeResult);
+            return Ok(recipe);
         }
 
         [HttpPost]
@@ -145,6 +145,21 @@ namespace CookingByMe_back.Controllers
                 {
                     //_logger.LogError($"Recipe with id: {id}, hasn't been found in db.");
                     return NotFound();
+                }
+
+                if (recipe.GroupIds != null)
+                {
+                    foreach (var groupId in recipe.GroupIds!)
+                    {
+                        Group_Recipe groupRecipe = new Group_Recipe()
+                        {
+                            RecipeId = recipeEntity.Id,
+                            GroupId = groupId,
+                        };
+
+                        recipeEntity.Group_Recipe!.Add(groupRecipe);
+                        await _recipeRepository.SaveAsync();
+                    }
                 }
 
 

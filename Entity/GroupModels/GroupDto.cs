@@ -18,8 +18,6 @@ namespace CookingByMe_back.Models.GroupModels
 
         public string? Description { get; set; }
 
-        public List<Recipe> RecipesList { get; set; } = new List<Recipe>();
-
         [Required]
         public DateTime CreatedAt { get; set; }
 

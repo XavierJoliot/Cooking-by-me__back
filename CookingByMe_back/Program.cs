@@ -85,7 +85,7 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("read:recipe", policy => policy.Requirements.Add(new HasScopeRequirement("read:recipe", domain)));
 });
 
-builder.Services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
+builder.Services.AddScoped<IAuthorizationHandler, HasScopeHandler>();
 
 
 // Registration of services

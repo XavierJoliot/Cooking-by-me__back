@@ -1,8 +1,5 @@
 ﻿using CookingByMe_back.Core.IRepository;
-using CookingByMe_back.Models;
-using CookingByMe_back.Models.StepModels;
 using Microsoft.EntityFrameworkCore;
-using System.Data.Entity.Core;
 using System.Linq.Expressions;
 
 namespace CookingByMe_back.Core.Repository

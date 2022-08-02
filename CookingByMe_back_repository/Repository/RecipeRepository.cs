@@ -7,27 +7,29 @@ namespace CookingByMe_back.Core.Repository
 {
     public class RecipeRepository : Repository<Recipe>, IRecipeRepository
     {
-        private readonly CookingByMeContext context;
         public RecipeRepository(CookingByMeContext context) : base(context)
         {
-            this.context = context;
         }
 
         public async Task<List<Recipe>> GetAllRecipesAsync(string userId)
         {
             //return await FindAll().Include(r => r.Group_Recipe).ToListAsync();
-            return await FindAll().Where(r => r.UserId == userId).ToListAsync();
+            return await FindAll().Where(r => r.UserId == userId).AsNoTracking().ToListAsync();
         }
 
         public async Task<Recipe?> GetRecipeByIdAsync(int id)
         {
-            return await FindByCondition(r => r.Id.Equals(id))
+            var currentRecipe = await FindByCondition(r => r.Id.Equals(id))
                 .Include(r => r.StepsList!.OrderBy(s => s.Order))
                 .Include(r => r.IngredientsList)
-                .Include(r => r.Group_Recipe)
+                .Include(r => r.Group_Recipe!)
                 .OrderByDescending(r => r.CreatedAt)
+                .AsNoTracking()
                 .FirstOrDefaultAsync();
+
+            return currentRecipe;
         }
+
 
         public void CreateIngredient(Recipe recipe, Ingredient ingredient)
         {

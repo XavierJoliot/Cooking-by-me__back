@@ -17,16 +17,17 @@ namespace CookingByMe_back.Core.Repository
         public async Task<List<Group>> GetAllGroupsAsync(string userId)
         {
             return await FindAll()
-                .Include(g => g.Group_Recipe)
                 .Where(g => g.UserId == userId)
                 .OrderByDescending(g => g.CreatedAt)
+                .AsNoTracking()
                 .ToListAsync();
         }
 
         public async Task<Group?> GetGroupByIdAsync(int id)
         {
             return await FindByCondition(s => s.Id.Equals(id))
-                .Include(g => g.Group_Recipe)
+                .Include(g => g.Group_Recipe!)
+                .AsNoTracking()
                 .FirstOrDefaultAsync();
         }
 
@@ -66,12 +67,13 @@ namespace CookingByMe_back.Core.Repository
                 .Where(g => g.GroupId == groupId)
                 .Include(g => g.Group)
                 .Include(g => g.Recipe)
+                .AsNoTracking()
                 .FirstOrDefaultAsync();
         }
 
         public async Task<List<Group_Recipe>> GetAllGroupByRecipeId(int recipeId)
         {
-            return await _context.Group_Recipe.Where(gr => gr.RecipeId.Equals(recipeId)).Include(gr => gr.Group).ToListAsync();
+            return await _context.Group_Recipe.Where(gr => gr.RecipeId.Equals(recipeId)).Include(gr => gr.Group).AsNoTracking().ToListAsync();
         }
 
         public void RemoveRecipeFromGroup(Group_Recipe recipe)
