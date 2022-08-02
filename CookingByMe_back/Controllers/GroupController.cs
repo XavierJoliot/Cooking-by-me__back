@@ -163,7 +163,7 @@ namespace CookingByMe_back.Controllers
                     //_logger.LogError("Invalid groupRecipeForCreation object sent from client.");
                     return BadRequest("Invalid model object");
                 }
-                var recipeExist = _groupRepository.FindRecipeFromGroup(groupRecipeForCreation.GroupId, groupRecipeForCreation.RecipeId);
+                Group_Recipe? recipeExist = await _groupRepository.FindRecipeFromGroup(groupRecipeForCreation.GroupId, groupRecipeForCreation.RecipeId);
                 if(recipeExist != null)
                 {
                     return BadRequest("Recipe already exist in this group");
@@ -207,6 +207,14 @@ namespace CookingByMe_back.Controllers
                 //_logger.LogError($"Something went wrong inside DeleteRecipeFromGroup action: {ex.Message}");
                 return StatusCode(500, "Internal server error");
             }
+        }
+
+        [HttpGet("recette/{id}")]
+        public async Task<IActionResult> testlitete(int id)
+        {
+            var test = await _groupRepository.GetAllGroupByRecipeId(id);
+
+            return Ok();
         }
     }
 }

@@ -22,7 +22,7 @@ namespace CookingByMe_back.Core.Repository
         public async Task<Recipe?> GetRecipeByIdAsync(int id)
         {
             return await FindByCondition(r => r.Id.Equals(id))
-                .Include(r => r.StepsList)
+                .Include(r => r.StepsList!.OrderBy(s => s.Order))
                 .Include(r => r.IngredientsList)
                 .Include(r => r.Group_Recipe)
                 .OrderByDescending(r => r.CreatedAt)
