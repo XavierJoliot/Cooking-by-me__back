@@ -30,8 +30,8 @@ namespace CookingByMe_back.Models.RecipeModels
 
         public DateTime? UpdatedAt { get; set; }
 
-        public ICollection<Group>? GroupList { get; set; }
-        public ICollection<Ingredient>? IngredientList { get; set; }
-        public ICollection<Step>? StepList { get; set; }
+        public ICollection<Step>? StepsList { get; set; }
+        public ICollection<Ingredient>? IngredientsList { get; set; }
+        public ICollection<Group>? GroupsList { get; set; }
     }
 }

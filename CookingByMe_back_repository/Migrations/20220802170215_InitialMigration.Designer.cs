@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CookingByMe_back.Core.Migrations
 {
     [DbContext(typeof(CookingByMeContext))]
-    [Migration("20220729030236_InitialMigration")]
+    [Migration("20220802170215_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

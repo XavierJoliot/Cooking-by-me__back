@@ -11,10 +11,10 @@ namespace CookingByMe_back.Models.GroupRecipeModels
 
 
         public int RecipeId { get; set; }
-        public Recipe? Recipe { get; set; }
+        public Recipe Recipe { get; set; }
 
 
         public int GroupId { get; set; }
-        public Group? Group { get; set; }
+        public Group Group { get; set; }
     }
 }

@@ -12,6 +12,7 @@ namespace CookingByMe_back.Configuration
         public MapperProfile()
         {
             CreateMap<Recipe, RecipeDto>();
+            CreateMap<RecipeDto, Recipe>();
             CreateMap<RecipeForCreationDto, Recipe>();
             CreateMap<RecipeForUpdateDto, Recipe>();
 
@@ -19,11 +20,13 @@ namespace CookingByMe_back.Configuration
             CreateMap<StepForCreationDto, Step>();
             CreateMap<StepForCreationFromRecipeDto, Step>();
             CreateMap<StepForUpdateDto, Step>();
+            CreateMap<StepForUpdateFromRecipeDto, Step>();
 
             CreateMap<Ingredient, IngredientDto>();
             CreateMap<IngredientForCreationDto, Ingredient>();
             CreateMap<IngredientForCreationFromRecipeDto, Ingredient>();
             CreateMap<IngredientForUpdateDto, Ingredient>();
+            CreateMap<IngredientForUpdateFromRecipeDto, Ingredient>();
 
             CreateMap<Group, GroupDto>();
             CreateMap<GroupForCreationDto, Group>();
