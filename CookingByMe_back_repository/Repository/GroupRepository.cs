@@ -71,11 +71,6 @@ namespace CookingByMe_back.Core.Repository
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<List<Group_Recipe>> GetAllGroupByRecipeId(int recipeId)
-        {
-            return await _context.Group_Recipe.Where(gr => gr.RecipeId.Equals(recipeId)).Include(gr => gr.Group).AsNoTracking().ToListAsync();
-        }
-
         public void RemoveRecipeFromGroup(Group_Recipe recipe)
         {
             _context.Remove(recipe);

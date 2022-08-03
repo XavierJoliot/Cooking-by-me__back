@@ -208,13 +208,5 @@ namespace CookingByMe_back.Controllers
                 return StatusCode(500, "Internal server error");
             }
         }
-
-        [HttpGet("recette/{id}")]
-        public async Task<IActionResult> testlitete(int id)
-        {
-            var test = await _groupRepository.GetAllGroupByRecipeId(id);
-
-            return Ok();
-        }
     }
 }
