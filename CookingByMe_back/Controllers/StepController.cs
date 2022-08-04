@@ -1,11 +1,15 @@
 ﻿using AutoMapper;
 using CookingByMe_back.Core.IRepository;
 using CookingByMe_back.Models.StepModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CookingByMe_back.Controllers
 {
     [ApiController]
+    [Authorize]
+    [EnableCors]
     [Route("api/etape")]
     public class StepController : ControllerBase
     {

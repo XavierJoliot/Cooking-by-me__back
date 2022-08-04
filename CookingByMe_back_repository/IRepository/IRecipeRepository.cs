@@ -11,8 +11,6 @@ namespace CookingByMe_back.Core.IRepository
 
         public Task<Recipe?> GetRecipeByIdAsync(int id);
 
-        public void CreateIngredient(Recipe recipe, Ingredient ingredient);
-
         public void CreateRecipe(Recipe recipe);
 
         public void UpdateRecipe(Recipe recipe);

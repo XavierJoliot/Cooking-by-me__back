@@ -2,12 +2,16 @@
 using CookingByMe_back.Core.IRepository;
 using CookingByMe_back.Models.GroupModels;
 using CookingByMe_back.Models.GroupRecipeModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace CookingByMe_back.Controllers
 {
     [ApiController]
+    [Authorize]
+    [EnableCors]
     [Route("api/groupe")]
     public class GroupController : ControllerBase
     {

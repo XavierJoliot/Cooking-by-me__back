@@ -6,7 +6,6 @@
 | Champ | Type | Spécificités | Description | 
 | - | - | - | - | 
 | id | INT | PRIMARY KEY, NOT NULL, UNSIGNED, AUTO_INCREMENT | L'identifiant de la recette | 
-| group_id | INT | NULL | L'identifiant du groupe de la recette, peut être nul | 
 | user_id | VARCHAR(255) | NOT NULL | L'identifiant de l'utilisateur | 
 | title | VARCHAR(255) | NOT NULL | Le titre de la recette | 
 | duration | INT | NULL | La durée de préparation de la recette, peut être nul | 
@@ -22,7 +21,7 @@
 | Champ | Type | Spécificités | Description | 
 | - | - | - | - | 
 | id | INT | PRIMARY KEY, NOT NULL, UNSIGNED, AUTO_INCREMENT | L'identifiant de l'ingredient | 
-| recipe_id | INT | NOT NULL | L'identifiant de la recette contenant l'ingredient | 
+| recipe_id | INT, FOREIGN KEY | NOT NULL | L'identifiant de la recette contenant l'ingredient | 
 | name | VARCHAR(255) | NOT NULL | Le nom de l'ingredient |
 | quantity | INT | NOT NULL | La quantité de l'ingredient | 
 | unit | VARCHAR(255) | NOT NULL | L'unité de la quantité de l'ingredient |
@@ -35,7 +34,7 @@
 | Champ | Type | Spécificités | Description | 
 | - | - | - | - | 
 | id | INT | PRIMARY KEY, NOT NULL, UNSIGNED, AUTO_INCREMENT | L'identifiant de l'étape | 
-| recipe_id | INT | NOT NULL | L'identifiant de la recette contenant l'étape | 
+| recipe_id | INT, FOREIGN KEY | NOT NULL | L'identifiant de la recette contenant l'étape | 
 | order | INT | NOT NULL | L'ordre de l'étape |
 | description | LONGTEXT | NOT NULL | La description de l'étape |
 | created_at | DATETIME | NOT NULL, DEFAULT CURRENT_DATETIME | La date de création de l'étape | 
@@ -53,3 +52,12 @@
 | description | LONGTEXT | NULL | Une description de l'utilisateur concernant le groupe, peut être nul | 
 | created_at | DATETIME | NOT NULL, DEFAULT CURRENT_DATETIME | La date de création du groupe | 
 | updated_at | DATETIME | NULL | La date de la dernière mise à jour du groupe, peut être nul |
+
+
+## GROUPES_RECETTE (`group_recipe`)
+
+| Champ | Type | Spécificités | Description | 
+| - | - | - | - | 
+| id | INT | PRIMARY KEY, NOT NULL, UNSIGNED, AUTO_INCREMENT | L'identifiant du groupe | 
+| recipe_id | INT, FOREIGN KEY | NOT NULL | L'identifiant de la recette contenue dans le groupe |
+| group_id | INT, FOREIGN KEY | NOT NULL | L'identifiant du groupe contenant la recette |

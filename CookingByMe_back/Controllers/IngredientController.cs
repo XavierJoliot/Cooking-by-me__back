@@ -1,11 +1,15 @@
 ﻿using AutoMapper;
 using CookingByMe_back.Core.IRepository;
 using CookingByMe_back.Models.IngredientModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CookingByMe_back.Controllers
 {
     [ApiController]
+    [Authorize]
+    [EnableCors]
     [Route("api/ingredient")]
     public class IngredientController : ControllerBase
     {

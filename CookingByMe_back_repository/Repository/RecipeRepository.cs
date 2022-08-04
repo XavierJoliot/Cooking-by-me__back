@@ -30,12 +30,6 @@ namespace CookingByMe_back.Core.Repository
             return currentRecipe;
         }
 
-
-        public void CreateIngredient(Recipe recipe, Ingredient ingredient)
-        {
-            recipe.IngredientsList!.Add(ingredient);
-        }
-
         public void CreateRecipe(Recipe recipe)
         {
             Create(recipe);
