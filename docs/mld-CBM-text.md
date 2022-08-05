@@ -1,4 +1,4 @@
-**RECIPE** (<ins>recipe code</ins>, user id, title, duration, quantity, image path, note, _group code_)  
+**RECIPE** (<ins>recipe code</ins>, user id, title, duration, quantity, image path, note)  
 
 **INGREDIENT** (<ins>ingredient code</ins>, name, quantity, unit, _recipe code_) 
 
