@@ -363,5 +363,5 @@ MigrationBackup/
 FodyWeavers.xsd
 
 # Config files
-appsettings.json
-appsettings.Development.json
+CookingByMe_back/appsettings.json
+CookingByMe_back/appsettings.Development.json
