@@ -24,6 +24,7 @@ namespace CookingByMe_back.Models.RecipeModels
         public string? ImagePath { get; set; }
 
         public string? Note { get; set; }
+
         public DateTime CreatedAt { get; set; }
 
         public DateTime? UpdatedAt { get; set; }
