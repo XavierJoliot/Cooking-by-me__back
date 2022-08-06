@@ -362,6 +362,3 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 
-# Config files
-CookingByMe_back/appsettings.json
-CookingByMe_back/appsettings.Development.json
