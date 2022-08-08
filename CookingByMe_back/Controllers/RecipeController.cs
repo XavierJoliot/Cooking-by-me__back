@@ -10,7 +10,6 @@ using System.Security.Claims;
 namespace CookingByMe_back.Controllers
 {
     [ApiController]
-    [Authorize]
     [EnableCors]
     [Route("api/recette")]
     public class RecipeController : ControllerBase
@@ -37,6 +36,16 @@ namespace CookingByMe_back.Controllers
             //_logger = logger;
         }
 
+        [HttpGet("cooking-by-me")]
+        public async Task<IActionResult> GetAllCookingRecipesAsync()
+        {
+            var recipesList = await _recipeRepository.GetAllCookingRecipesAsync();
+            //_logger.LogInfo($"Returned all recipes from database.");
+            var recipesResult = _mapper.Map<List<Recipe>>(recipesList);
+            return Ok(recipesResult);
+        }
+
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAllRecipesAsync()
         {
@@ -47,6 +56,8 @@ namespace CookingByMe_back.Controllers
             return Ok(recipesResult);
         }
 
+
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetRecipeByIdAsync(int id)
         {
@@ -60,6 +71,8 @@ namespace CookingByMe_back.Controllers
             return Ok(recipe);
         }
 
+
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> CreateRecipeAsync([FromBody] RecipeForCreationDto recipeForCreation)
         {
@@ -98,6 +111,8 @@ namespace CookingByMe_back.Controllers
             }
         }
 
+
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRecipeAsync(int id)
         {
@@ -120,6 +135,8 @@ namespace CookingByMe_back.Controllers
             }
         }
 
+
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateRecipeAsync(int id, RecipeForUpdateDto recipe)
         {

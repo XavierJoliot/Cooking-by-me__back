@@ -45,7 +45,8 @@ builder.Services.AddAuthentication(options =>
     options.Audience = Configuration["Auth0:ApiIdentifier"];
     options.TokenValidationParameters = new TokenValidationParameters
     {
-        NameClaimType = ClaimTypes.NameIdentifier
+        NameClaimType = ClaimTypes.NameIdentifier,
+        RoleClaimType = ClaimTypes.Role
     };
 });
 
