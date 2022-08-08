@@ -6,9 +6,6 @@ namespace CookingByMe_back.Models.RecipeModels
 {
     public class RecipeForCreationDto
     {
-
-        public int? GroupId { get; set; }
-
         [Required]
         [MaxLength(255)]
         public string Title { get; set; } = string.Empty;
@@ -21,6 +18,8 @@ namespace CookingByMe_back.Models.RecipeModels
         public string? ImagePath { get; set; }
 
         public string? Note { get; set; }
+
+        public int IsPublic { get; set; }
 
         public List<StepForCreationFromRecipeDto>? StepsList { get; set; }
 
