@@ -25,7 +25,7 @@ namespace CookingByMe_back.Models.RecipeModels
 
         public string? Note { get; set; }
 
-        public int IsPublic { get; set; }
+        public bool IsPublic { get; set; }
 
         public DateTime CreatedAt { get; set; }
 

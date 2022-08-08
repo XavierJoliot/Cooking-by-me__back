@@ -13,7 +13,7 @@ namespace CookingByMe_back.Core.Repository
 
         public async Task<List<Recipe>> GetAllCookingRecipesAsync()
         {
-            return await FindAll().Where(r => r.IsPublic == 1).AsNoTracking().ToListAsync();
+            return await FindAll().Where(r => r.IsPublic == true).AsNoTracking().ToListAsync();
         }
 
         public async Task<List<Recipe>> GetAllRecipesAsync(string userId)
