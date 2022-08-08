@@ -6,9 +6,6 @@ namespace CookingByMe_back.Models.RecipeModels
 {
     public class RecipeForCreationDto
     {
-
-        public int? GroupId { get; set; }
-
         [Required]
         [MaxLength(255)]
         public string Title { get; set; } = string.Empty;
