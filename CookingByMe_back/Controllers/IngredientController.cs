@@ -25,7 +25,7 @@ namespace CookingByMe_back.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateIngredientAsync(IngredientForCreationDto ingredientForCreation)
+        public async Task<IActionResult> CreateIngredientAsync([FromForm] IngredientForCreationDto ingredientForCreation)
         {
             try
             {
@@ -95,7 +95,7 @@ namespace CookingByMe_back.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateIngredientAsync(int id, IngredientForUpdateDto ingredient)
+        public async Task<IActionResult> UpdateIngredientAsync(int id, [FromForm] IngredientForUpdateDto ingredient)
         {
             try
             {

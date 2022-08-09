@@ -74,7 +74,7 @@ namespace CookingByMe_back.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> CreateRecipeAsync([FromBody] RecipeForCreationDto recipeForCreation)
+        public async Task<IActionResult> CreateRecipeAsync([FromForm] RecipeForCreationDto recipeForCreation)
         {
             try
             {
@@ -95,6 +95,25 @@ namespace CookingByMe_back.Controllers
                 var recipeEntity = _mapper.Map<RecipeForCreationDto, Recipe>(recipeForCreation);
 
                 recipeEntity.UserId = userId;
+
+                if(recipeForCreation.ImagePath != null)
+                {
+                    try
+                    {
+                        string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", recipeForCreation.ImagePath.FileName);
+
+                        using (Stream stream = new FileStream(path, FileMode.Create))
+                        {
+                            recipeForCreation.ImagePath.CopyTo(stream);
+                        }
+
+                        recipeEntity.ImagePath = recipeForCreation.ImagePath.FileName;
+                    }
+                    catch(Exception)
+                    {
+                        return StatusCode(500, "Internal server error");
+                    }
+                }
 
                 _recipeRepository.CreateRecipe(recipeEntity);
 
@@ -137,7 +156,7 @@ namespace CookingByMe_back.Controllers
 
         [Authorize]
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateRecipeAsync(int id, RecipeForUpdateDto recipe)
+        public async Task<IActionResult> UpdateRecipeAsync(int id, [FromForm] RecipeForUpdateDto recipe)
         {
             try
             {

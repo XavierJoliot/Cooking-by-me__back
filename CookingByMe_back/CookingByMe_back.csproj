@@ -21,4 +21,8 @@
     <ProjectReference Include="..\CookingByMe_back_repository\CookingByMe_back.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\" />
+  </ItemGroup>
+
 </Project>
