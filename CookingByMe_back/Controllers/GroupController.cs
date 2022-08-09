@@ -29,7 +29,7 @@ namespace CookingByMe_back.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateGroupAsync(GroupForCreationDto groupForCreation)
+        public async Task<IActionResult> CreateGroupAsync([FromForm] GroupForCreationDto groupForCreation)
         {
             try
             {
@@ -113,7 +113,7 @@ namespace CookingByMe_back.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateGroupAsync(int id, GroupForUpdateDto group)
+        public async Task<IActionResult> UpdateGroupAsync(int id, [FromForm] GroupForUpdateDto group)
         {
             try
             {

@@ -39,7 +39,7 @@ namespace CookingByMe_back.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateStepAsync(StepForCreationDto stepForCreation)
+        public async Task<IActionResult> CreateStepAsync([FromForm] StepForCreationDto stepForCreation)
         {
             try
             {
@@ -94,7 +94,7 @@ namespace CookingByMe_back.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateStepAsync(int id, StepForUpdateDto step)
+        public async Task<IActionResult> UpdateStepAsync(int id, [FromForm] StepForUpdateDto step)
         {
             try
             {
