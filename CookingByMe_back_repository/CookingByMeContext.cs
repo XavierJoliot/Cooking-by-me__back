@@ -30,7 +30,7 @@ namespace CookingByMe_back.Core
 
             recipe.HasKey(r => r.Id);
             recipe.Property(r => r.CreatedAt).HasDefaultValueSql("getdate()");
-            recipe.Property(r => r.IsPublic).HasDefaultValueSql("0");
+            recipe.Property(r => r.IsPublic).HasDefaultValue(false);
             recipe.HasMany(r => r.StepsList).WithOne(s => s.Recipe).HasForeignKey(s => s.RecipeId).OnDelete(DeleteBehavior.Cascade);
             recipe.HasMany(r => r.IngredientsList).WithOne(i => i.Recipe).HasForeignKey(i => i.RecipeId).OnDelete(DeleteBehavior.Cascade);
 

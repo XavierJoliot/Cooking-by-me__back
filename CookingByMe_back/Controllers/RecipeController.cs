@@ -135,7 +135,6 @@ namespace CookingByMe_back.Controllers
             }
         }
 
-
         [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateRecipeAsync(int id, RecipeForUpdateDto recipe)
