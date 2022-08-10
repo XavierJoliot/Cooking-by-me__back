@@ -13,7 +13,7 @@ namespace CookingByMe_back.Controllers
     [Authorize]
     [EnableCors]
     [Route("api/groupe")]
-    public class GroupController : ControllerBase
+    public class GroupController : MainController
     {
         private readonly IMapper _mapper;
         //private readonly ILogger _logger;
@@ -49,6 +49,12 @@ namespace CookingByMe_back.Controllers
                 // Add recipe methods
                 var groupEntity = _mapper.Map<GroupForCreationDto, Group>(groupForCreation);
 
+                if (groupForCreation.ImagePath != null)
+                {
+                    AddImage(groupForCreation.ImagePath);
+                    groupEntity.ImagePath = groupForCreation.ImagePath.FileName;
+                }
+
                 groupEntity.UserId = userId;
 
                 _groupRepository.CreateGroup(groupEntity);
@@ -59,7 +65,7 @@ namespace CookingByMe_back.Controllers
 
                 return Ok(createdGroup);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //_logger.LogError($"Something went wrong inside GroupForCreation action: {ex.Message}");
                 return StatusCode(500, "Internal server error");
@@ -105,7 +111,7 @@ namespace CookingByMe_back.Controllers
                 await _groupRepository.SaveAsync();
                 return NoContent();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //_logger.LogError($"Something went wrong inside DeleteGroup action: {ex.Message}");
                 return StatusCode(500, "Internal server error");
@@ -131,7 +137,19 @@ namespace CookingByMe_back.Controllers
 
                 var groupEntity = await _groupRepository.GetGroupByIdAsync(id);
 
+                string? currentImage = groupEntity!.ImagePath;
+
                 _mapper.Map(group, groupEntity);
+
+                if (group.ImagePath != null && group.ImagePath.FileName != currentImage)
+                {
+                    AddImage(group.ImagePath);
+                    groupEntity.ImagePath = group.ImagePath.FileName;
+                }
+                else
+                {
+                    groupEntity.ImagePath = currentImage;
+                }
 
                 if (groupEntity == null)
                 {
@@ -139,13 +157,12 @@ namespace CookingByMe_back.Controllers
                     return NotFound();
                 }
 
-
                 _groupRepository.UpdateGroup(groupEntity);
                 await _groupRepository.SaveAsync();
 
                 return Ok(groupEntity);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //_logger.LogError($"Something went wrong inside UpdateGroupAsync action: {ex.Message}");
                 return StatusCode(500, "Internal server error");
@@ -182,7 +199,7 @@ namespace CookingByMe_back.Controllers
 
                 return Ok(groupRecipeCreated);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //_logger.LogError($"Something went wrong inside groupRecipeForCreation action: {ex.Message}");
                 return StatusCode(500, "Internal server error");
@@ -206,7 +223,7 @@ namespace CookingByMe_back.Controllers
 
                 return NoContent();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //_logger.LogError($"Something went wrong inside DeleteRecipeFromGroup action: {ex.Message}");
                 return StatusCode(500, "Internal server error");

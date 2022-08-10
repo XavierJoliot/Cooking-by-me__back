@@ -64,7 +64,7 @@ namespace CookingByMe_back.Controllers
 
                 return Ok(createdStep);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //_logger.LogError($"Something went wrong inside CreateStep action: {ex.Message}");
                 return StatusCode(500, "Internal server error");
@@ -86,7 +86,7 @@ namespace CookingByMe_back.Controllers
                 await _stepRepository.SaveAsync();
                 return NoContent();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //_logger.LogError($"Something went wrong inside DeleteStep action: {ex.Message}");
                 return StatusCode(500, "Internal server error");
@@ -126,7 +126,7 @@ namespace CookingByMe_back.Controllers
 
                 return Ok(stepEntity);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //_logger.LogError($"Something went wrong inside UpdateStepAsync action: {ex.Message}");
                 return StatusCode(500, "Internal server error");

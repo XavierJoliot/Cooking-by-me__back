@@ -51,7 +51,7 @@ namespace CookingByMe_back.Controllers
 
                 return Ok(createdIngredient);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //_logger.LogError($"Something went wrong inside CreateIngredient action: {ex.Message}");
                 return StatusCode(500, "Internal server error");
@@ -87,7 +87,7 @@ namespace CookingByMe_back.Controllers
                 await _ingredientRepository.SaveAsync();
                 return NoContent();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //_logger.LogError($"Something went wrong inside DeleteIngredient action: {ex.Message}");
                 return StatusCode(500, "Internal server error");
@@ -127,7 +127,7 @@ namespace CookingByMe_back.Controllers
 
                 return Ok(ingredientEntity);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //_logger.LogError($"Something went wrong inside UpdateIngredientAsync action: {ex.Message}");
                 return StatusCode(500, "Internal server error");
