@@ -12,7 +12,7 @@ namespace CookingByMe_back.Controllers
     [ApiController]
     [EnableCors]
     [Route("api/recette")]
-    public class RecipeController : ControllerBase
+    public class RecipeController : MainController
     {
         private readonly IMapper _mapper;
         //private readonly ILogger _logger;
@@ -98,21 +98,8 @@ namespace CookingByMe_back.Controllers
 
                 if(recipeForCreation.ImagePath != null)
                 {
-                    try
-                    {
-                        string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", recipeForCreation.ImagePath.FileName);
-
-                        using (Stream stream = new FileStream(path, FileMode.Create))
-                        {
-                            recipeForCreation.ImagePath.CopyTo(stream);
-                        }
-
-                        recipeEntity.ImagePath = recipeForCreation.ImagePath.FileName;
-                    }
-                    catch(Exception)
-                    {
-                        return StatusCode(500, "Internal server error");
-                    }
+                    AddImage(recipeForCreation.ImagePath);
+                    recipeEntity.ImagePath = recipeForCreation.ImagePath.FileName;
                 }
 
                 _recipeRepository.CreateRecipe(recipeEntity);
@@ -123,7 +110,7 @@ namespace CookingByMe_back.Controllers
 
                 return Ok(createdRecipe);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //_logger.LogError($"Something went wrong inside RecipeForCreation action: {ex.Message}");
                 return StatusCode(500, "Internal server error");
@@ -147,7 +134,7 @@ namespace CookingByMe_back.Controllers
                 await _recipeRepository.SaveAsync();
                 return NoContent();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //_logger.LogError($"Something went wrong inside DeleteRecipe action: {ex.Message}");
                 return StatusCode(500, "Internal server error");
@@ -174,12 +161,23 @@ namespace CookingByMe_back.Controllers
 
                 var recipeEntity = await _recipeRepository.GetRecipeByIdAsync(id);
 
+                string? currentImage = recipeEntity!.ImagePath;
+
                 _mapper.Map(recipe, recipeEntity);
 
                 if (recipeEntity == null)
                 {
                     //_logger.LogError($"Recipe with id: {id}, hasn't been found in db.");
                     return NotFound();
+                }
+
+                if (recipe.ImagePath != null && recipe.ImagePath.FileName != currentImage)
+                {
+                    AddImage(recipe.ImagePath);
+                    recipeEntity.ImagePath = recipe.ImagePath.FileName;
+                } else
+                {
+                    recipeEntity.ImagePath = currentImage;
                 }
 
                 if (recipe.GroupIds != null)
@@ -203,11 +201,11 @@ namespace CookingByMe_back.Controllers
 
                 return Ok(recipeEntity);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //_logger.LogError($"Something went wrong inside UpdateRecipeAsync action: {ex.Message}");
                 return StatusCode(500, "Internal server error");
             }
-        }
+        }   
     }
 }
