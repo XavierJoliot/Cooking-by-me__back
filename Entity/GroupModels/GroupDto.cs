@@ -1,4 +1,5 @@
-﻿using CookingByMe_back.Models.RecipeModels;
+﻿using CookingByMe_back.Models.GroupRecipeModels;
+using CookingByMe_back.Models.RecipeModels;
 using System.ComponentModel.DataAnnotations;
 
 namespace CookingByMe_back.Models.GroupModels
@@ -22,5 +23,7 @@ namespace CookingByMe_back.Models.GroupModels
         public DateTime CreatedAt { get; set; }
 
         public DateTime? UpdatedAt { get; set; }
+
+        public List<Group_RecipeForGroupDto>? Group_Recipe { get; set; }
     }
 }

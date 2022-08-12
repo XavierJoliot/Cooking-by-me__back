@@ -16,13 +16,5 @@ namespace CookingByMe_back.Core.IRepository
         public void UpdateGroup(Group group);
 
         public void DeleteGroup(Group group);
-
-
-
-
-        public void AddRecipeAsync(Group_Recipe groupRecipe);
-        public Task<Group_Recipe?> FindRecipeFromGroup(int groupId, int recipeId);
-
-        public void RemoveRecipeFromGroup(Group_Recipe groupRecipe);
     }
 }

@@ -17,22 +17,13 @@ namespace CookingByMe_back.Controllers
         private readonly IMapper _mapper;
         //private readonly ILogger _logger;
         private readonly IRecipeRepository _recipeRepository;
-        private readonly IStepRepository _stepRepository;
-        private readonly IIngredientRepository _ingredientRepository;
-        private readonly IGroupRepository _groupRepository;
 
         public RecipeController(
             IMapper mapper, 
-            IRecipeRepository recipeRepository,
-            IStepRepository stepRepository,
-            IIngredientRepository ingredientRepository,
-            IGroupRepository groupRepository)
+            IRecipeRepository recipeRepository)
         {
             _mapper = mapper;
             _recipeRepository = recipeRepository;
-            _stepRepository = stepRepository;
-            _ingredientRepository = ingredientRepository;
-            _groupRepository = groupRepository;
             //_logger = logger;
         }
 
