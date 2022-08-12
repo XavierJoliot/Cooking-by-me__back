@@ -68,7 +68,9 @@ namespace CookingByMe_back.Controllers
                 return NotFound();
             }
 
-            return Ok(recipe);
+            RecipeDto currentRecipe = _mapper.Map<Recipe, RecipeDto>(recipe);
+
+            return Ok(currentRecipe);
         }
 
 
@@ -184,14 +186,16 @@ namespace CookingByMe_back.Controllers
                 {
                     foreach (var groupId in recipe.GroupIds!)
                     {
-                        Group_Recipe groupRecipe = new Group_Recipe()
-                        {
-                            RecipeId = recipeEntity.Id,
-                            GroupId = groupId,
-                        };
+                        if(recipeEntity.Group_Recipe!.Find(elmt => elmt.GroupId == groupId) == null) {
+                            Group_Recipe groupRecipe = new Group_Recipe()
+                            {
+                                RecipeId = recipeEntity.Id,
+                                GroupId = groupId,
+                            };
 
-                        recipeEntity.Group_Recipe!.Add(groupRecipe);
-                        await _recipeRepository.SaveAsync();
+                            recipeEntity.Group_Recipe!.Add(groupRecipe);
+                            await _recipeRepository.SaveAsync();
+                        }
                     }
                 }
 
@@ -206,6 +210,6 @@ namespace CookingByMe_back.Controllers
                 //_logger.LogError($"Something went wrong inside UpdateRecipeAsync action: {ex.Message}");
                 return StatusCode(500, "Internal server error");
             }
-        }   
+        }
     }
 }
