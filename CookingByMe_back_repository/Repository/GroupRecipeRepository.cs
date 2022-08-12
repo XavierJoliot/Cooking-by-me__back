@@ -16,6 +16,12 @@ namespace CookingByMe_back.Core.Repository
                 .FirstOrDefaultAsync();
         }
 
+        public void CreateGroupRecipe(Group_Recipe groupRecipe)
+        {
+            Create(groupRecipe);
+        }
+
+
         public void DeleteGroupRecipe(Group_Recipe groupRecipe)
         {
             Delete(groupRecipe);

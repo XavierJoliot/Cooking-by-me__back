@@ -27,6 +27,7 @@ namespace CookingByMe_back.Core.Repository
                 .Include(r => r.StepsList!.OrderBy(s => s.Order))
                 .Include(r => r.IngredientsList)
                 .Include(r => r.Group_Recipe!)
+                .ThenInclude(gr => gr.Group)
                 .OrderByDescending(r => r.CreatedAt)
                 .AsNoTracking()
                 .FirstOrDefaultAsync();

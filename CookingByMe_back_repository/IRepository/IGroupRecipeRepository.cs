@@ -7,5 +7,7 @@ namespace CookingByMe_back.Core.IRepository
         public Task<Group_Recipe?> GetGroupRecipeByIdAsync(int id);
 
         public void DeleteGroupRecipe(Group_Recipe groupRecipe);
+
+        public void CreateGroupRecipe(Group_Recipe groupRecipe);
     }
 }

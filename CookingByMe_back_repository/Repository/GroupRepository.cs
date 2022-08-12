@@ -25,6 +25,7 @@ namespace CookingByMe_back.Core.Repository
         {
             return await FindByCondition(s => s.Id.Equals(id))
                 .Include(g => g.Group_Recipe!)
+                .ThenInclude(gr => gr.Recipe)
                 .AsNoTracking()
                 .FirstOrDefaultAsync();
         }
