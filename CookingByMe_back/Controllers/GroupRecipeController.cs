@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CookingByMe_back.Core.IRepository;
+using CookingByMe_back.Models.GroupModels;
 using CookingByMe_back.Models.GroupRecipeModels;
 using CookingByMe_back.Models.RecipeModels;
 using Microsoft.AspNetCore.Authorization;
@@ -15,13 +16,15 @@ namespace CookingByMe_back.Controllers
     {
         private readonly IGroupRecipeRepository _groupRecipeRepository;
         private readonly IRecipeRepository _recipeRepository;
+        private readonly IGroupRepository _groupRepository;
         private readonly IMapper _mapper;
 
-        public GroupRecipeController(IGroupRecipeRepository groupRecipeRepository, IRecipeRepository recipeRepository, IMapper mapper)
+        public GroupRecipeController(IGroupRecipeRepository groupRecipeRepository, IRecipeRepository recipeRepository, IMapper mapper, IGroupRepository groupRepository)
         {
             _groupRecipeRepository = groupRecipeRepository;
             _recipeRepository = recipeRepository;
             _mapper = mapper;
+            _groupRepository = groupRepository;
         }
 
         [Authorize]
@@ -56,6 +59,54 @@ namespace CookingByMe_back.Controllers
                         {
                             RecipeId = currentRecipe.Id,
                             GroupId = groupId,
+                        };
+
+                        _groupRecipeRepository.CreateGroupRecipe(groupRecipe);
+                        await _groupRecipeRepository.SaveAsync();
+                    }
+                }
+
+                return Ok();
+            }
+            catch (Exception)
+            {
+                //_logger.LogError($"Something went wrong inside RecipeForCreation action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [Authorize]
+        [HttpPost("groupe/{id}")]
+        public async Task<IActionResult> AddRecipeToGroupAsync(int id, [FromBody] Group_RecipeForCreationFromGroupDto groupRecipeForCreation)
+        {
+            try
+            {
+                if (groupRecipeForCreation == null)
+                {
+                    //_logger.LogError("RecipeForCreation object sent from client is null.");
+                    return BadRequest("StepForCreation object is null");
+                }
+                if (!ModelState.IsValid)
+                {
+                    //_logger.LogError("Invalid RecipeForCreation object sent from client.");
+                    return BadRequest("Invalid model object");
+                }
+
+                Group? currentGroup = await _groupRepository.GetGroupByIdAsync(id);
+
+                if (currentGroup == null)
+                {
+                    return NotFound();
+                }
+
+                foreach (var recipeId in groupRecipeForCreation.RecipeIds!)
+                {
+                    if (currentGroup.Group_Recipe!.Find(gr => gr.RecipeId == recipeId) == null)
+                    {
+                        Group_Recipe groupRecipe = new Group_Recipe()
+                        {
+                            RecipeId = recipeId,
+                            GroupId = currentGroup.Id,
                         };
 
                         _groupRecipeRepository.CreateGroupRecipe(groupRecipe);
