@@ -8,10 +8,8 @@ namespace CookingByMe_back.Core.Repository
 {
     public class GroupRepository : Repository<Group>, IGroupRepository
     {
-        private CookingByMeContext _context;
         public GroupRepository(CookingByMeContext context) : base(context)
         {
-            this._context = context;
         }
 
         public async Task<List<Group>> GetAllGroupsAsync(string userId)
@@ -50,30 +48,6 @@ namespace CookingByMe_back.Core.Repository
         public void DeleteGroup(Group group)
         {
             Delete(group);
-        }
-
-
-
-
-        public async void AddRecipeAsync(Group_Recipe groupRecipe)
-        {
-            await _context.Group_Recipe.AddAsync(groupRecipe);
-        }
-
-        public async Task<Group_Recipe?> FindRecipeFromGroup(int groupId, int recipeId)
-        {
-            return await _context.Group_Recipe
-                .Where(g => g.RecipeId == recipeId)
-                .Where(g => g.GroupId == groupId)
-                .Include(g => g.Group)
-                .Include(g => g.Recipe)
-                .AsNoTracking()
-                .FirstOrDefaultAsync();
-        }
-
-        public void RemoveRecipeFromGroup(Group_Recipe recipe)
-        {
-            _context.Remove(recipe);
         }
     }
 }

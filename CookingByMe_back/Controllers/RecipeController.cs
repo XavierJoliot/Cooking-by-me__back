@@ -17,22 +17,13 @@ namespace CookingByMe_back.Controllers
         private readonly IMapper _mapper;
         //private readonly ILogger _logger;
         private readonly IRecipeRepository _recipeRepository;
-        private readonly IStepRepository _stepRepository;
-        private readonly IIngredientRepository _ingredientRepository;
-        private readonly IGroupRepository _groupRepository;
 
         public RecipeController(
             IMapper mapper, 
-            IRecipeRepository recipeRepository,
-            IStepRepository stepRepository,
-            IIngredientRepository ingredientRepository,
-            IGroupRepository groupRepository)
+            IRecipeRepository recipeRepository)
         {
             _mapper = mapper;
             _recipeRepository = recipeRepository;
-            _stepRepository = stepRepository;
-            _ingredientRepository = ingredientRepository;
-            _groupRepository = groupRepository;
             //_logger = logger;
         }
 
@@ -68,7 +59,9 @@ namespace CookingByMe_back.Controllers
                 return NotFound();
             }
 
-            return Ok(recipe);
+            RecipeDto currentRecipe = _mapper.Map<Recipe, RecipeDto>(recipe);
+
+            return Ok(currentRecipe);
         }
 
 
@@ -184,14 +177,16 @@ namespace CookingByMe_back.Controllers
                 {
                     foreach (var groupId in recipe.GroupIds!)
                     {
-                        Group_Recipe groupRecipe = new Group_Recipe()
-                        {
-                            RecipeId = recipeEntity.Id,
-                            GroupId = groupId,
-                        };
+                        if(recipeEntity.Group_Recipe!.Find(elmt => elmt.GroupId == groupId) == null) {
+                            Group_Recipe groupRecipe = new Group_Recipe()
+                            {
+                                RecipeId = recipeEntity.Id,
+                                GroupId = groupId,
+                            };
 
-                        recipeEntity.Group_Recipe!.Add(groupRecipe);
-                        await _recipeRepository.SaveAsync();
+                            recipeEntity.Group_Recipe!.Add(groupRecipe);
+                            await _recipeRepository.SaveAsync();
+                        }
                     }
                 }
 
@@ -206,6 +201,6 @@ namespace CookingByMe_back.Controllers
                 //_logger.LogError($"Something went wrong inside UpdateRecipeAsync action: {ex.Message}");
                 return StatusCode(500, "Internal server error");
             }
-        }   
+        }
     }
 }

@@ -89,6 +89,7 @@ builder.Services.AddScoped<IAuthorizationHandler, HasScopeHandler>();
 
 // Registration of services
 builder.Services.AddScoped<IGroupRepository, GroupRepository>();
+builder.Services.AddScoped<IGroupRecipeRepository, GroupRecipeRepository>();
 builder.Services.AddScoped<IIngredientRepository, IngredientRepository>();
 builder.Services.AddScoped<IRecipeRepository, RecipeRepository>();
 builder.Services.AddScoped<IStepRepository, StepRepository>();

@@ -18,13 +18,11 @@ namespace CookingByMe_back.Controllers
         private readonly IMapper _mapper;
         //private readonly ILogger _logger;
         private readonly IGroupRepository _groupRepository;
-        private readonly IRecipeRepository _recipeRepository;
 
-        public GroupController(IMapper mapper, IGroupRepository groupRepository, IRecipeRepository recipeRepository)
+        public GroupController(IMapper mapper, IGroupRepository groupRepository)
         {
             _mapper = mapper;
             _groupRepository = groupRepository;
-            _recipeRepository = recipeRepository;
             //_logger = logger;
         }
 
@@ -87,13 +85,14 @@ namespace CookingByMe_back.Controllers
         {
             var group = await _groupRepository.GetGroupByIdAsync(id);
             //_logger.LogInfo($"Returned a group from database.");
-            var groupResult = _mapper.Map<Group>(group);
-            if (groupResult == null)
+            if (group == null)
             {
                 return NotFound();
             }
 
-            return Ok(groupResult);
+            GroupDto CurrentGroup = _mapper.Map<Group, GroupDto>(group);
+
+            return Ok(CurrentGroup);
         }
 
         [HttpDelete("{id}")]
@@ -137,6 +136,12 @@ namespace CookingByMe_back.Controllers
 
                 var groupEntity = await _groupRepository.GetGroupByIdAsync(id);
 
+                if (groupEntity == null)
+                {
+                    //_logger.LogError($"Group with id: {id}, hasn't been found in db.");
+                    return NotFound();
+                }
+
                 string? currentImage = groupEntity!.ImagePath;
 
                 _mapper.Map(group, groupEntity);
@@ -151,10 +156,22 @@ namespace CookingByMe_back.Controllers
                     groupEntity.ImagePath = currentImage;
                 }
 
-                if (groupEntity == null)
+                if (group.RecipeIds != null)
                 {
-                    //_logger.LogError($"Group with id: {id}, hasn't been found in db.");
-                    return NotFound();
+                    foreach (var recipeId in group.RecipeIds!)
+                    {
+                        if (groupEntity.Group_Recipe!.Find(elmt => elmt.GroupId == recipeId) == null)
+                        {
+                            Group_Recipe groupRecipe = new Group_Recipe()
+                            {
+                                GroupId = groupEntity.Id,
+                                RecipeId = recipeId,
+                            };
+
+                            groupEntity.Group_Recipe!.Add(groupRecipe);
+                            await _groupRepository.SaveAsync();
+                        }
+                    }
                 }
 
                 _groupRepository.UpdateGroup(groupEntity);
@@ -165,67 +182,6 @@ namespace CookingByMe_back.Controllers
             catch (Exception)
             {
                 //_logger.LogError($"Something went wrong inside UpdateGroupAsync action: {ex.Message}");
-                return StatusCode(500, "Internal server error");
-            }
-        }
-
-        [HttpPost("recette")]
-        public async Task<IActionResult> AddRecipeToGroup(Group_RecipeForCreationDto groupRecipeForCreation)
-        {
-            try
-            {
-                if (groupRecipeForCreation == null)
-                {
-                    //_logger.LogError("groupRecipeForCreation object sent from client is null.");
-                    return BadRequest("groupRecipeForCreation object is null");
-                }
-                if (!ModelState.IsValid)
-                {
-                    //_logger.LogError("Invalid groupRecipeForCreation object sent from client.");
-                    return BadRequest("Invalid model object");
-                }
-                Group_Recipe? recipeExist = await _groupRepository.FindRecipeFromGroup(groupRecipeForCreation.GroupId, groupRecipeForCreation.RecipeId);
-                if(recipeExist != null)
-                {
-                    return BadRequest("Recipe already exist in this group");
-                }
-
-                // Add recipe methods
-                var groupRecipeEntity = _mapper.Map<Group_RecipeForCreationDto, Group_Recipe>(groupRecipeForCreation);
-                _groupRepository.AddRecipeAsync(groupRecipeEntity);
-                await _groupRepository.SaveAsync();
-
-                var groupRecipeCreated = _mapper.Map<Group_Recipe, Group_RecipeForGroupDto>(groupRecipeEntity);
-
-                return Ok(groupRecipeCreated);
-            }
-            catch (Exception)
-            {
-                //_logger.LogError($"Something went wrong inside groupRecipeForCreation action: {ex.Message}");
-                return StatusCode(500, "Internal server error");
-            }
-        }
-
-        [HttpDelete("{groupId}/recette/{recipeId}")]
-        public async Task<IActionResult> RemoveRecipeFromGroup(int groupId, int recipeId)
-        {
-            try
-            {
-                var CurrentRecipe = await _groupRepository.FindRecipeFromGroup(groupId, recipeId);
-                if (CurrentRecipe == null)
-                {
-                    //_logger.LogError($"Recipe with id: {id}, hasn't been found in db.");
-                    return NotFound();
-                }
-                
-                _groupRepository.RemoveRecipeFromGroup(CurrentRecipe);
-                await _groupRepository.SaveAsync();
-
-                return NoContent();
-            }
-            catch (Exception)
-            {
-                //_logger.LogError($"Something went wrong inside DeleteRecipeFromGroup action: {ex.Message}");
                 return StatusCode(500, "Internal server error");
             }
         }

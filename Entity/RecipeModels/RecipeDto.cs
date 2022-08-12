@@ -1,4 +1,5 @@
 ﻿using CookingByMe_back.Models.GroupModels;
+using CookingByMe_back.Models.GroupRecipeModels;
 using CookingByMe_back.Models.IngredientModels;
 using CookingByMe_back.Models.StepModels;
 using System.ComponentModel.DataAnnotations;
@@ -32,6 +33,6 @@ namespace CookingByMe_back.Models.RecipeModels
 
         public ICollection<Step>? StepsList { get; set; }
         public ICollection<Ingredient>? IngredientsList { get; set; }
-        public ICollection<Group>? GroupsList { get; set; }
+        public ICollection<Group_RecipeForRecipeDto>? Group_Recipe { get; set; }
     }
 }
